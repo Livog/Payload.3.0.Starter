@@ -13,7 +13,7 @@ const Header = async () => {
     .filter(({ page }) => typeof page?.value === 'object')
     .map(({ page }) => ({ ...(typeof page?.value === 'object' ? page?.value : {}), collection: page?.relationTo })) as Page[]
   return (
-    <header className="absolute top-0 z-50 w-full py-2 text-white">
+    <header className="absolute top-0 z-50 w-full py-2 text-black dark:text-white">
       <Container className="flex items-center justify-between gap-x-3">
         <div className="relative flex w-1/4 flex-nowrap items-center gap-2 text-xl">
           <Logo className="w-14" />
@@ -23,11 +23,11 @@ const Header = async () => {
           </Link>
         </div>
         <div className="flex items-center justify-center max-sm:hidden md:w-2/4">
-          <nav className="w-fit rounded-full bg-black/10 backdrop-blur-sm">
+          <nav className="w-fit rounded-full backdrop-blur-sm">
             <ul className="flex gap-x-1.5 px-1.5 py-1 font-medium">
               {menuItems.map((page, index) => (
                 <li key={index}>
-                  <Link className="inline-flex rounded-full px-4 py-1.5 transition-all duration-300" href={page?.path || '#'}>
+                  <Link className="inline-flex rounded-full px-5 pt-2 pb-[7px] transition-all duration-300 hover:bg-white/10" href={page?.path || '#'}>
                     <span className="translate-y-[-1px]">{page?.title || ''}</span>
                   </Link>
                 </li>

@@ -43,7 +43,7 @@ export default buildConfig({
   email: nodemailerAdapter({
     defaultFromAddress: 'payload@livog.se',
     defaultFromName: 'Payload',
-    transport: await nodemailer.createTransport({
+    transport: nodemailer.createTransport({
       host: 'smtp.resend.com',
       port: 465,
       auth: {

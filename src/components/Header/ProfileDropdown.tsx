@@ -1,4 +1,5 @@
-import { auth, signIn, signOut } from '@/lib/auth'
+import { auth, signOut } from '@/lib/auth'
+import Link from 'next/link'
 
 const ProfileDropdown = async () => {
   const session = await auth()
@@ -6,15 +7,12 @@ const ProfileDropdown = async () => {
   return (
     <div className="relative">
       {!session && (
-        <form
-          action={async () => {
-            'use server'
-            await signIn('github')
-          }}>
-          <button type="submit" className="rounded-full px-6 py-2 hover:cursor-pointer dark:bg-white dark:text-black">
-            Sign in with GitHub
-          </button>
-        </form>
+        <Link
+          className="rounded-full bg-zinc-200 px-5 py-3 font-medium text-black transition-all duration-300 hover:bg-zinc-300 dark:bg-zinc-800
+            dark:text-white dark:hover:bg-zinc-700"
+          href="/sign-in">
+          Sign in
+        </Link>
       )}
       {session?.user && (
         <div className="flex items-center gap-x-2">
