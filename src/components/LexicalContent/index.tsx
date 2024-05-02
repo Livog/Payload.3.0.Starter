@@ -82,8 +82,6 @@ const getNodeClassNames = (node: SerializedLexicalNode) => {
   if (!node) return attributes
 
   let classNames = ''
-  if (String(node?.style).includes('font-family: Absolut Headline;')) classNames += 'font-absolut-headline '
-  if (String(node?.style).includes('font-family: Absolut Handwritten;')) classNames += 'font-absolut-handwritten '
   if (String(node?.format).toString()?.includes('left') && node.direction !== 'ltr') classNames += 'text-left '
   if (String(node?.format).toString()?.includes('center')) classNames += 'text-center '
   if (String(node?.format).toString()?.includes('right') && node.direction !== 'rtl') classNames += 'text-right '

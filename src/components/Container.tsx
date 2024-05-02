@@ -1,12 +1,8 @@
 import cn from '@/utils/cn'
+import type { ComponentPropsWithoutRef } from 'react'
 
-type ContainerProps = {
-  children: React.ReactNode
-  className?: string
-}
-
-const Container = ({ children, className = '' }: ContainerProps) => {
-  return <div className={cn('container mx-auto w-full max-w-screen-xl px-3', className)}>{children}</div>
+const Container = ({ children, className }: ComponentPropsWithoutRef<'div'>) => {
+  return <div className={cn('container mx-auto w-full max-w-screen-lg px-3', className)}>{children}</div>
 }
 
 export default Container

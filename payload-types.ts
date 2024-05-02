@@ -174,6 +174,33 @@ export interface SiteSetting {
           relationTo: 'pages';
           value: string | Page;
         } | null;
+        subMenuItems?:
+          | {
+              page?: {
+                relationTo: 'pages';
+                value: string | Page;
+              } | null;
+              subMenuItems?:
+                | {
+                    page?: {
+                      relationTo: 'pages';
+                      value: string | Page;
+                    } | null;
+                    subMenuItems?:
+                      | {
+                          page?: {
+                            relationTo: 'pages';
+                            value: string | Page;
+                          } | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;

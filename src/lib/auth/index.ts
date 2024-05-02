@@ -6,7 +6,7 @@ import { getFieldsToSign as getFieldsToSignPayload } from 'payload/auth'
 import { PayloadAdapter } from './adapter'
 import authConfig from './config'
 
-export const { auth, handlers, signIn, signOut } = NextAuth(() => {
+export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth(() => {
   const payload = getPayload()
   return {
     adapter: PayloadAdapter(payload),
@@ -17,40 +17,40 @@ export const { auth, handlers, signIn, signOut } = NextAuth(() => {
           await payload
         ).findByID({
           collection: COLLECTION_SLUG_USER,
-          id: userId,
+          id: userId
         })
         const fieldsToSign = getFieldsToSignPayload({
           // @ts-ignore
           user: dbUser,
           email: dbUser.email,
-          collectionConfig: users,
+          collectionConfig: users
         })
         token = {
           ...token,
-          ...(fieldsToSign || {}),
+          ...(fieldsToSign || {})
         }
         return token
       },
-      async session({ session, token }) {
+      async session({ session, token, trigger }) {
         session.user = session.user || {}
         if (!token) return session
         const fieldsToSign = getFieldsToSignPayload({
           // @ts-ignore
           user: token,
           email: session.user.email,
-          collectionConfig: users,
+          collectionConfig: users
         })
 
         session.user = {
           ...fieldsToSign,
           ...session.user,
           // @ts-ignore
-          collection: COLLECTION_SLUG_USER,
+          collection: COLLECTION_SLUG_USER
         }
 
         return session
-      },
+      }
     },
-    ...authConfig,
+    ...authConfig
   }
 })

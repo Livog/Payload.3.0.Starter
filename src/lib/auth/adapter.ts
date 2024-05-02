@@ -2,10 +2,10 @@ import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from '@/payload/collec
 import type { AdapterUser } from '@auth/core/adapters'
 import type { Adapter, AdapterUser as BaseAdapterUser } from 'next-auth/adapters'
 import { isWithinExpirationDate } from 'oslo'
-import { alphabet, generateRandomString } from 'oslo/crypto'
 import type { BasePayload, GeneratedTypes } from 'payload'
 import type { Session, User } from '~/payload-types'
-import { DEFAULT_FIELDS_USER_IS_NOT_ALLOWED_TO_CHANGE, DEFAULT_USER_ROLE, SESSION_MAX_AGE } from './config'
+import { FIELDS_USER_IS_ALLOWED_TO_CHANGE, DEFAULT_USER_ROLE, SESSION_MAX_AGE } from './config'
+import generateRandomString from '@/utils/generateRandomString'
 
 declare module '@auth/core/adapters' {
   // @ts-ignore
@@ -101,7 +101,7 @@ type Payload = BasePayload<GeneratedTypes> | Promise<BasePayload<GeneratedTypes>
 type PayloadAdapterOptions = {
   collectionNames?: Partial<CollectionTypeMap>
   defaultUserRole?: string
-  fieldsUserIsNotAllowedToChange?: string[]
+  fieldsUserIsAllowedToChange?: string[]
   defaultMaxAge?: number
 }
 
@@ -110,7 +110,7 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
   options.collectionNames.users ??= COLLECTION_SLUG_USER
   options.collectionNames.sessions ??= COLLECTION_SLUG_SESSIONS
   options.defaultUserRole ||= DEFAULT_USER_ROLE
-  options.fieldsUserIsNotAllowedToChange ||= DEFAULT_FIELDS_USER_IS_NOT_ALLOWED_TO_CHANGE
+  options.fieldsUserIsAllowedToChange ||= FIELDS_USER_IS_ALLOWED_TO_CHANGE
   options.defaultMaxAge ||= SESSION_MAX_AGE
 
   const userCollectionName = options.collectionNames.users!
@@ -132,7 +132,7 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
     async createUser(data) {
       const userData = {
         ...data,
-        password: generateRandomString(32, alphabet('a-z', '0-9')),
+        password: generateRandomString(32),
         imageUrl: data.image,
         role: options.defaultUserRole
       }
@@ -144,7 +144,6 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
         await payload
       ).create({
         collection: userCollectionName,
-        // @ts-ignore
         data: userData
       })
       return ensureAdapterUser(user) || null
@@ -172,22 +171,23 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
     },
 
     async updateUser(data) {
-      ;(options.fieldsUserIsNotAllowedToChange || []).forEach((field: string) => {
-        // @ts-ignore
-        if (field in data) delete data[field]
+      const userId = data.id
+      Object.keys(data).forEach((key) => {
+        if (!(options.fieldsUserIsAllowedToChange || []).includes(key) && key in data) {
+          // @ts-ignore
+          delete data[key]
+        }
       })
       if (process.env.AUTH_VERPOSE) {
         console.log('updateUser', data)
       }
-      const { docs } = await (
+      const user = await (
         await payload
       ).update({
         collection: userCollectionName,
-        id: data.id,
-        // @ts-ignore
+        id: userId,
         data
       })
-      const user = docs.at(0)
       if (!user) {
         throw new Error('PayloadAdapter: updateUser: no user found')
       }

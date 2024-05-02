@@ -21,7 +21,7 @@ const HeroBanner = ({ content, backgroundImage, blockIndex }: HeroBannerBlock & 
           alt=""
           fill
           loading={blockIndex > 2 ? 'lazy' : 'eager'}
-          className="max-h-[1000px] object-cover object-top [mask-image:_linear-gradient(to_top,transparent_250px,_theme(colors.zinc.940))]"
+          className="!h-screen !w-[100vw] object-cover object-top [mask-image:_linear-gradient(to_top,transparent_250px,_theme(colors.zinc.940))]"
         />
       )}
     </section>

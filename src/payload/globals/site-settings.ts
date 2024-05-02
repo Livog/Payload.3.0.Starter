@@ -1,9 +1,25 @@
-import type { GlobalConfig } from 'payload/types'
+import type { Field, GlobalConfig } from 'payload/types'
 import { isAdmin } from '@/payload/access'
 import { COLLECTION_SLUG_PAGE } from '@/payload/collections'
 import { revalidateTag } from 'next/cache'
 
 export const GLOBAL_SETTINGS_SLUG = 'site-settings'
+
+const menuItemsField = (name: 'subMenuItems' | 'menuItems', depth: number = 3): Field => {
+  const label = name === 'menuItems' ? 'Menu Items' : 'Sub Menu Items'
+  const fields: Field[] = [{ type: 'relationship', name: 'page', relationTo: [COLLECTION_SLUG_PAGE] }]
+
+  if (depth > 0) {
+    fields.push(menuItemsField('subMenuItems', depth - 1))
+  }
+
+  return {
+    type: 'array',
+    name,
+    label,
+    fields
+  }
+}
 
 export const siteSettings: GlobalConfig = {
   slug: GLOBAL_SETTINGS_SLUG,
@@ -25,15 +41,7 @@ export const siteSettings: GlobalConfig = {
         },
         {
           label: 'Header',
-          fields: [
-            { type: 'text', name: 'logo' },
-            {
-              type: 'array',
-              name: 'menuItems',
-              label: 'Menu Items',
-              fields: [{ type: 'relationship', name: 'page', relationTo: [COLLECTION_SLUG_PAGE] }]
-            }
-          ]
+          fields: [{ type: 'text', name: 'logo' }, menuItemsField('menuItems')]
         }
       ]
     }

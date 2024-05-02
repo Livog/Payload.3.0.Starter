@@ -1,12 +1,20 @@
 import type { Config } from 'tailwindcss'
 import tailwindTypography from '@tailwindcss/typography'
 import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindAnimate from 'tailwindcss-animate'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config = {
-  darkMode: 'class',
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  darkMode: ['class'],
+  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1400px'
+      }
+    },
     extend: {
       fontFamily: {
         inter: ['InterVariable', 'Inter', ...defaultTheme.fontFamily.sans]
@@ -30,7 +38,7 @@ const config = {
       }
     }
   },
-  plugins: [tailwindTypography()]
+  plugins: [tailwindTypography(), tailwindAnimate]
 } satisfies Config
 
 export default config

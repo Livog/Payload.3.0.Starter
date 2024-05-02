@@ -4,12 +4,12 @@ import Header from '@/components/Header'
 import cn from '@/utils/cn'
 import type { Viewport } from 'next'
 import { ThemeProvider } from 'next-themes'
-import { Inter } from 'next/font/google'
+import { Inter as FontSans } from 'next/font/google'
 
-const inter = Inter({
+const fontSans = FontSans({
   subsets: ['latin'],
   weight: 'variable',
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap'
 })
 
@@ -19,12 +19,14 @@ export const viewport: Viewport = {
 
 const Layout: React.FC<{ children: React.ReactNode }> = async ({ children }) => {
   return (
-    <html lang="en" className={cn(inter.variable, 'h-full')} suppressHydrationWarning>
-      <body className="flex h-full flex-col bg-zinc-50 dark:bg-zinc-940 dark:text-white">
+    <html lang="en" className={cn(fontSans.variable, 'h-full')} suppressHydrationWarning>
+      <body className="overflow-x-hidden bg-zinc-50 font-sans antialiased dark:bg-zinc-940 dark:text-white">
         <ThemeProvider attribute="class">
-          <Header />
-          <main className="grow">{children}</main>
-          <Footer />
+          <div className="app flex min-h-screen flex-col">
+            <Header />
+            <main className="flex grow flex-col">{children}</main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
