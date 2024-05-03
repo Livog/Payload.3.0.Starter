@@ -8,6 +8,8 @@ import type { User } from '~/payload-types'
 import { Fieldset } from '@/components/ui/FieldSet'
 import { Card, CardContent, CardFooter } from '../ui/Card'
 import { updateUser } from './actions'
+import { useFormState } from 'react-dom'
+import { toast } from 'sonner'
 
 const ProfileForm = ({ user }: { user: User }) => {
   const [formData, setFormData] = useState<User>(user)
@@ -16,6 +18,13 @@ const ProfileForm = ({ user }: { user: User }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
+  const [response, updateUserAction, isPending] = useFormState(async () => {
+    const response = await updateUser(formData)
+    if (!response || !response.user) return null
+    toast.success('Profile updated successfully!', { duration: 2000, position: 'top-center', dismissible: true })
+    return response
+  }, null)
+
   return (
     <div className="space-y-6">
       <div className="text-left">
@@ -23,7 +32,7 @@ const ProfileForm = ({ user }: { user: User }) => {
         <p className="text-gray-500 dark:text-gray-400">Make changes to your profile details below.</p>
       </div>
       <div className="space-y-4">
-        <form action={updateUser} className="space-y-4">
+        <form action={updateUserAction} className="space-y-4">
           <Card>
             <CardContent className="pt-6">
               <Label className="text-base font-bold" htmlFor="user-email">
@@ -72,7 +81,7 @@ const ProfileForm = ({ user }: { user: User }) => {
             </CardContent>
           </Card>
           <Button className="w-fit" type="submit">
-            Update Profile
+            {isPending ? 'Updating...' : 'Update Profile'}
           </Button>
         </form>
         <h2 className="!mt-10 text-xl font-semibold">Danger Zone</h2>

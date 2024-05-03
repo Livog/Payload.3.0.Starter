@@ -1,6 +1,7 @@
 import '@/app/style.css'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import { Toaster } from '@/components/ui/Sonner'
 import cn from '@/utils/cn'
 import type { Viewport } from 'next'
 import { ThemeProvider } from 'next-themes'
@@ -27,6 +28,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = async ({ children }) => 
             <main className="flex grow flex-col">{children}</main>
             <Footer />
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

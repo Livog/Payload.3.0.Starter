@@ -25,13 +25,12 @@ const sanitizeUserData = (data: Record<string, any>) => {
   return newData
 }
 
-export const updateUser = async (formData: FormData) => {
+export const updateUser = async (userData: User) => {
   const session = await auth()
   if (!session || !session.user) {
     redirect('/sign-in')
   }
   const user = session.user
-  const userData = Object.fromEntries(formData)
   const sanitizedUserData = sanitizeUserData(userData)
   const payload = await getPayload()
   const newUser = (await payload
