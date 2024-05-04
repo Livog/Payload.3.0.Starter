@@ -1,10 +1,10 @@
 import { PayloadAdapter, getUserByEmail } from '@/lib/auth/adapter'
-import authConfig, { ADMIN_ACCESS_ROLES } from '@/lib/auth/config'
+import authConfig, { ADMIN_ACCESS_ROLES, DEFAULT_USER_ROLE } from '@/lib/auth/config'
 import { getAuthJsCookieName, mockRequestAndResponseFromHeadersForNextAuth } from '@/lib/auth/edge'
 import { isAdmin, isAdminOrCurrentUser } from '@/payload/access'
 import parseCookieString from '@/utils/parseCookieString'
 import NextAuth from 'next-auth'
-import { isWithinExpirationDate } from 'oslo'
+import { isWithinExpirationDate } from '@/utils/isWithinExperationDate'
 import type { CollectionConfig } from 'payload/types'
 
 const ADMIN_AUTH_GROUP = 'Auth'
@@ -78,7 +78,6 @@ export const users: CollectionConfig = {
           if (!user || typeof user.email !== 'string' || (session?.expires && !isWithinExpirationDate(new Date(session.expires)))) return null
 
           const dbUser = await getUserByEmail({ payload, email: user.email, collection: COLLECTION_SLUG_USER })
-          if (!dbUser || (typeof dbUser.role === 'string' && !ADMIN_ACCESS_ROLES.includes(dbUser?.role))) return null
           return {
             ...dbUser,
             collection: COLLECTION_SLUG_USER
@@ -88,6 +87,9 @@ export const users: CollectionConfig = {
     ]
   },
   access: {
+    admin: async ({ req }) => {
+      return ADMIN_ACCESS_ROLES.includes(req?.user?.role || DEFAULT_USER_ROLE)
+    },
     read: isAdminOrCurrentUser,
     create: isAdmin,
     update: isAdmin,

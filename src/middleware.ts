@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { getAuthJsCookieName, getAuthJsToken } from '@/lib/auth/edge'
 import { SESSION_STRATEGY } from '@/lib/auth/config'
-import { isWithinExpirationDate } from 'oslo'
+import { isWithinExpirationDate } from '@/utils/isWithinExperationDate'
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']

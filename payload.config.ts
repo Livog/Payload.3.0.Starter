@@ -5,8 +5,7 @@ import { buildConfig } from 'payload/config'
 import { en } from 'payload/i18n/en'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
-import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
-import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
+import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
 import { media, pages, users, sessions, COLLECTION_SLUG_MEDIA } from '@/payload/collections'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
@@ -14,20 +13,6 @@ import { siteSettings } from '@/payload/globals/site-settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-const storageAdapter = s3Adapter({
-  config: {
-    endpoint: process.env.S3_ENDPOINT,
-    region: process.env.S3_REGION,
-    forcePathStyle: true,
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string
-    }
-  },
-  bucket: process.env.NEXT_PUBLIC_S3_BUCKET as string,
-  acl: 'public-read'
-})
 
 export default buildConfig({
   editor: lexicalEditor(),
@@ -56,15 +41,25 @@ export default buildConfig({
     supportedLanguages: { en }
   },
   plugins: [
-    cloudStorage({
+    s3StoragePlugin({
       collections: {
         [COLLECTION_SLUG_MEDIA]: {
-          adapter: storageAdapter,
-          disablePayloadAccessControl: true,
+          disableLocalStorage: true,
           generateFileURL: (args: any) => {
             return `${process.env.NEXT_PUBLIC_S3_PUBLIC_URL}/${process.env.NEXT_PUBLIC_S3_BUCKET}/${args.prefix}/${args.filename}`
           },
           prefix: 'media'
+        }
+      },
+      bucket: process.env.NEXT_PUBLIC_S3_BUCKET as string,
+      acl: 'public-read',
+      config: {
+        endpoint: process.env.S3_ENDPOINT,
+        region: process.env.S3_REGION,
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string
         }
       }
     })
