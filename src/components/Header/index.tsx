@@ -14,7 +14,7 @@ const Header = async () => {
       <Container className="flex items-center gap-x-3 md:justify-between">
         <div className="relative order-1 mr-auto flex w-auto flex-nowrap items-center gap-2 text-xl max-md:flex-auto md:w-1/4">
           <Logo className="w-12 shrink-0" />
-          <h1 className="font-bold">{settings?.logo}</h1>
+          <h1 className="font-bold">{settings?.header?.logo || settings?.appName}</h1>
           <Link href="/" className="absolute inset-0">
             <span className="sr-only">Go to start page</span>
           </Link>

@@ -6,7 +6,7 @@ import type { Config, SiteSetting } from '~/payload-types'
 import { MobileMenuHamburger } from '../MobileMenuHamburger'
 import MenuItems from './MenuItems'
 
-type MenuItem = NonNullable<SiteSetting['menuItems']>[number]
+type MenuItem = NonNullable<SiteSetting['header']['menuItems']>[number]
 type Page = NonNullable<MenuItem['page']>['value'] extends infer P ? (P extends { id: string } ? P : never) : never
 type Collection = keyof Config['collections']
 
@@ -15,7 +15,7 @@ export type FormattedMenuItem = Page & {
   subMenuItems?: FormattedMenuItem[]
 }
 
-const formatMenuItems = (menuItems: SiteSetting['menuItems']): FormattedMenuItem[] => {
+const formatMenuItems = (menuItems: SiteSetting['header']['menuItems']): FormattedMenuItem[] => {
   return (menuItems || []).flatMap((menuItem): FormattedMenuItem[] => {
     const formatted: FormattedMenuItem[] = []
     if (menuItem.page && typeof menuItem.page.value === 'object') {
@@ -36,7 +36,7 @@ const formatMenuItems = (menuItems: SiteSetting['menuItems']): FormattedMenuItem
 
 export const Menu = async () => {
   const settings = await getSiteSettings()
-  const menuItems = formatMenuItems(settings?.menuItems)
+  const menuItems = formatMenuItems(settings?.header?.menuItems)
   return (
     <>
       <Drawer direction="right" closeOnPathChange fixed>
@@ -57,8 +57,8 @@ export const Menu = async () => {
           {menuItems.map((item, index: number) => (
             <li key={item.title || index} className="group relative">
               <Link
-                className="flex items-center gap-x-2 rounded-lg px-3 py-2 font-medium outline-none ring-blue-500/80 transition-all
-                  duration-300 hover:bg-black/20 focus-visible:ring-2 dark:hover:bg-white/10"
+                className="flex items-center gap-x-2 rounded-lg px-3 py-2 font-medium outline-none ring-blue-500/80 transition-all duration-300
+                  hover:bg-black/20 focus-visible:ring-2 dark:hover:bg-white/10"
                 href={item.path || '#'}>
                 {item.title || 'No Title'}
                 {item.subMenuItems && item.subMenuItems.length > 0 && <ChevronDown className="h-4 w-4" />}

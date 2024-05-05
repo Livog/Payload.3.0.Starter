@@ -27,7 +27,7 @@ const formatSlug =
 
 type Slug = (fieldToUse?: string, overrides?: Partial<Field>) => Field
 
-const slugField: Slug = (fieldToUse = 'title', overrides) => {
+const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
   return deepMerge<Field, Partial<Field>>(
     {
       name: 'slug',
@@ -36,13 +36,13 @@ const slugField: Slug = (fieldToUse = 'title', overrides) => {
       index: true,
       required: false, // Need to be false so that we can use beforeValidate hook to set slug.
       admin: {
-        position: 'sidebar',
+        position: 'sidebar'
       },
       hooks: {
-        beforeValidate: [formatSlug(fieldToUse)],
-      },
+        beforeValidate: [formatSlug(fieldToUse)]
+      }
     },
-    overrides || {},
+    overrides
   )
 }
 

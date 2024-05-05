@@ -1,4 +1,5 @@
-import { Field } from 'payload/types'
+import type { Field, FieldHook } from 'payload/types'
+import deepMerge from 'deepmerge'
 import * as HiIcons from 'react-icons/hi2'
 
 const iconOptions = Object.entries(HiIcons)
@@ -8,9 +9,18 @@ const iconOptions = Object.entries(HiIcons)
     label: key.replace(/([a-z])([A-Z])/g, '$1 $2')
   }))
 
-export const iconField: Field = {
-  type: 'select',
-  name: 'icon',
-  label: 'Icon',
-  options: iconOptions
+type IconField = (overrides?: Partial<Field>) => Field
+
+const iconField: IconField = (overrides = {}) => {
+  return deepMerge<Field, Partial<Field>>(
+    {
+      type: 'select',
+      name: 'icon',
+      label: 'Icon',
+      options: iconOptions
+    },
+    overrides
+  )
 }
+
+export default iconField

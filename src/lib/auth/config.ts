@@ -13,6 +13,9 @@ export default {
   jwt: {
     maxAge: SESSION_MAX_AGE
   },
+  pages: {
+    signIn: '/sign-in'
+  },
   session: { strategy: SESSION_STRATEGY, maxAge: SESSION_MAX_AGE },
   providers: [
     GitHub({

@@ -1,8 +1,10 @@
 import ThemeChanger from '@/components/ThemeChanger'
 import Container from '@/components/Container'
 import Logo from '@/public/logo.svg'
+import getSiteSettings from '@/payload/utils/fetchSiteSettings'
 
-const Footer = () => {
+const Footer = async () => {
+  const settings = await getSiteSettings()
   return (
     <footer className="border-t border-zinc-200 p-10 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white">
       <Container>
@@ -10,9 +12,9 @@ const Footer = () => {
           <div className="md:col-span-2">
             <div className="mb-6 flex items-center space-x-2">
               <Logo className="h-10 w-10" />
-              <span className="text-xl font-bold">Demo</span>
+              {settings?.appName ? <span className="text-xl font-bold">{settings?.appName}</span> : null}
             </div>
-            <p className="text-zinc-500">A flexible starter template for scalable SaaS projects.</p>
+            {settings?.appDescription ? <p className="text-zinc-500">{settings?.appDescription}</p> : null}
             <div className="mt-6 flex items-center space-x-4"></div>
           </div>
           <div className="col-span-2 gap-8 md:col-span-2 md:grid md:grid-cols-2">
@@ -57,7 +59,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-10 flex justify-between border-t border-zinc-700 pt-6 text-left text-sm text-zinc-500">
-          <p>© {new Date().getFullYear()}. All rights reserved.</p>
+          <p>{settings?.footer?.copyright ? settings?.footer?.copyright : `© ${new Date().getFullYear()}. All rights reserved.`}</p>
           <div>
             <ThemeChanger />
           </div>
