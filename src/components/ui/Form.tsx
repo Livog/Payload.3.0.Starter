@@ -72,7 +72,7 @@ interface FormLabelProps extends React.ComponentPropsWithRef<typeof LabelPrimiti
 const FormLabel = ({ className, ref, ...props }: FormLabelProps) => {
   const { error, formItemId } = useFormField()
 
-  return <Label ref={ref} className={cn(error ? 'text-red-500 dark:text-red-900' : '', className)} htmlFor={formItemId} {...props} />
+  return <Label ref={ref} className={cn(error ? 'text-red-500 dark:text-red-700' : '', className)} htmlFor={formItemId} {...props} />
 }
 
 FormLabel.displayName = 'FormLabel'
@@ -115,7 +115,7 @@ const FormMessage = ({ className, children, ref, ...props }: FormMessageProps) =
   }
 
   return (
-    <p ref={ref} id={formMessageId} className={cn('text-sm font-medium text-red-500 dark:text-red-900', className)} {...props}>
+    <p ref={ref} id={formMessageId} className={cn('text-sm font-medium text-red-500 dark:text-red-700', className)} {...props}>
       {body}
     </p>
   )
