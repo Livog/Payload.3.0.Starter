@@ -1,7 +1,6 @@
 import { auth } from '@/lib/auth'
 import Link from 'next/link'
 import ProfileMenu from './ProfileMenu'
-import { Suspense } from 'react'
 
 const SignInOrProfile = async () => {
   const session = await auth()
@@ -15,7 +14,7 @@ const SignInOrProfile = async () => {
           Sign in
         </Link>
       )}
-      {session?.user && <ProfileMenu user={session.user} />}
+      {session?.user && <ProfileMenu />}
     </div>
   )
 }

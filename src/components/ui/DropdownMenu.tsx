@@ -4,8 +4,29 @@ import * as React from 'react'
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { Check, ChevronRight, Circle } from 'lucide-react'
 import cn from '@/utils/cn'
+import { usePathname } from 'next/navigation'
 
-const DropdownMenu = DropdownMenuPrimitive.Root
+type DropdownMenuRootProps = React.ComponentProps<typeof DropdownMenuPrimitive.Root> & {
+  closeOnPathChange?: boolean
+}
+
+const DropdownMenu = ({ closeOnPathChange = false, ...props }: DropdownMenuRootProps) => {
+  const [isOpen, setIsOpen] = React.useState(props.open ?? false)
+  const pathname = usePathname()
+
+  React.useEffect(() => {
+    if (closeOnPathChange) setIsOpen(false)
+  }, [pathname, closeOnPathChange])
+
+  const handleOpenChange = (open: boolean) => {
+    if (props.onOpenChange) props.onOpenChange(open)
+    setIsOpen(open)
+  }
+
+  return <DropdownMenuPrimitive.Root open={isOpen} onOpenChange={handleOpenChange} {...props} />
+}
+
+DropdownMenu.displayName = DropdownMenuPrimitive.Root.displayName
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { Menu } from './Menu'
 import SignInOrProfile from './SignInOrProfile'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 const Header = async () => {
   const settings = await getSiteSettings()
@@ -12,14 +13,19 @@ const Header = async () => {
     <header className="absolute top-0 z-50 w-full py-2 text-black dark:text-white">
       <Container className="flex items-center gap-x-3 md:justify-between">
         <div className="relative order-1 mr-auto flex w-auto flex-nowrap items-center gap-2 text-xl max-md:flex-auto md:w-1/4">
-          <Logo className="w-14 shrink-0" />
+          <Logo className="w-12 shrink-0" />
           <h1 className="font-bold">{settings?.logo}</h1>
           <Link href="/" className="absolute inset-0">
             <span className="sr-only">Go to start page</span>
           </Link>
         </div>
         <div className="order-2 flex justify-end md:order-3 md:w-1/4">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <Skeleton className="h-9 w-28 bg-red-500 px-3">
+                <Skeleton className="h-6 w-6 rounded-full bg-white"></Skeleton>
+              </Skeleton>
+            }>
             <SignInOrProfile />
           </Suspense>
         </div>

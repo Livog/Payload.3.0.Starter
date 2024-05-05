@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { MoonIcon, SunIcon, ComputerIcon } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select'
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
@@ -17,14 +19,19 @@ const ThemeSwitch = () => {
   }
 
   return (
-    <select
-      className="block w-full appearance-none rounded-md bg-zinc-50 p-3 text-sm text-black dark:bg-zinc-800 dark:text-white"
-      value={theme}
-      onChange={(e) => setTheme(e.target.value)}>
-      <option value="system">System</option>
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-    </select>
+    <Select onValueChange={(value) => setTheme(value)} value={theme}>
+      <SelectTrigger className="w-[150px] transition-all duration-300 ease-in-out dark:hover:text-white [&>span]:ml-2 [&>span]:mr-auto">
+        {theme === 'system' ? <ComputerIcon className="h-5 w-5" /> : null}
+        {theme === 'dark' ? <MoonIcon className="h-5 w-5" /> : null}
+        {theme === 'light' ? <SunIcon className="h-5 w-5" /> : null}
+        <SelectValue placeholder="Theme" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="light">Light</SelectItem>
+        <SelectItem value="dark">Dark</SelectItem>
+        <SelectItem value="system">System</SelectItem>
+      </SelectContent>
+    </Select>
   )
 }
 

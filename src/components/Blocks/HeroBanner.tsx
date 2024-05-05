@@ -6,7 +6,7 @@ import Container from '@/components/Container'
 const HeroBanner = ({ content, backgroundImage, blockIndex }: HeroBannerBlock & { blockIndex: number }) => {
   const imageSrc = typeof backgroundImage === 'object' ? backgroundImage?.url : null
   return (
-    <section className="flex h-[50dvh] min-h-[500px]">
+    <section className="relative flex h-[50dvh] min-h-[500px]">
       <div className="relative z-10 flex grow items-center">
         <Container>
           <div className="prose prose-lg dark:prose-invert">
@@ -21,7 +21,8 @@ const HeroBanner = ({ content, backgroundImage, blockIndex }: HeroBannerBlock & 
           alt=""
           fill
           loading={blockIndex > 2 ? 'lazy' : 'eager'}
-          className="!h-screen !w-[100vw] object-cover object-top [mask-image:_linear-gradient(to_top,transparent_250px,_theme(colors.zinc.940))]"
+          className="z-[-1] !h-screen !w-[100vw] object-cover object-top
+            [mask-image:_linear-gradient(to_top,transparent_250px,_theme(colors.zinc.940))]"
         />
       )}
     </section>

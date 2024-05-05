@@ -57,15 +57,15 @@ export const Menu = async () => {
           {menuItems.map((item, index: number) => (
             <li key={item.title || index} className="group relative">
               <Link
-                className="flex items-center gap-x-2 rounded-lg px-3 py-2 font-medium transition-all duration-300 hover:bg-black/20
-                  dark:hover:bg-white/10"
+                className="flex items-center gap-x-2 rounded-lg px-3 py-2 font-medium outline-none ring-blue-500/80 transition-all
+                  duration-300 hover:bg-black/20 focus-visible:ring-2 dark:hover:bg-white/10"
                 href={item.path || '#'}>
                 {item.title || 'No Title'}
                 {item.subMenuItems && item.subMenuItems.length > 0 && <ChevronDown className="h-4 w-4" />}
               </Link>
               {item.subMenuItems && item.subMenuItems.length > 0 && (
                 <ul
-                  className="invisible absolute left-0 top-full mt-2 flex w-fit origin-top-left translate-y-3 flex-col gap-y-1 rounded-lg border p-1
+                  className="invisible absolute left-0 top-full mt-2 flex w-fit origin-left translate-y-1 flex-col gap-y-1 rounded-lg border p-1
                     opacity-0 transition-all duration-300 ease-in-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100
                     group-focus:visible group-focus:translate-y-0 group-focus:opacity-100 group-[:not(:hover)]:delay-300 dark:border-zinc-700
                     dark:bg-zinc-800 md:w-[200px] md:origin-top-right">
