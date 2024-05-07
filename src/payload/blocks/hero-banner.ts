@@ -6,15 +6,44 @@ export const heroBanner: Block = {
   interfaceName: 'HeroBannerBlock',
   fields: [
     {
-      name: 'content',
-      type: 'richText',
-      required: true
+      name: 'settings',
+      type: 'select',
+      hasMany: true,
+      options: [
+        {
+          label: 'Invert Background Image in Dark Mode',
+          value: 'invertBackgroundImageInDarkMode'
+        }
+      ]
     },
     {
-      name: 'backgroundImage',
-      type: 'upload',
-      relationTo: COLLECTION_SLUG_MEDIA,
-      required: true
+      type: 'row',
+      fields: [
+        {
+          name: 'preTitle',
+          type: 'text'
+        },
+        {
+          name: 'title',
+          type: 'text',
+          required: true
+        },
+        {
+          name: 'subtitle',
+          type: 'text'
+        }
+      ]
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: COLLECTION_SLUG_MEDIA,
+          required: true
+        }
+      ]
     }
   ]
 }

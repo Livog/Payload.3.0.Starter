@@ -25,7 +25,7 @@ const ProfileMenu = async () => {
         <DropdownMenuTrigger className="inline-flex items-center gap-x-2 p-2 text-base font-medium outline-none">
           <Avatar image={user?.imageUrl} name={String(user?.name || 'User')} className="h-6 w-6" /> {firstName}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="origin-top-right" align="end">
+        <DropdownMenuContent className="min-w-[200px] origin-top-right" align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="p-0">

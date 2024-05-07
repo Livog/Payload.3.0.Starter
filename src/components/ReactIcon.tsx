@@ -41,13 +41,13 @@ interface ReactIconProps extends IconBaseProps {
   icon: string
 }
 
-const ReactIcon: React.FC<ReactIconProps> = ({ icon, size = '1em', color = 'black' }) => {
+const ReactIcon: React.FC<ReactIconProps> = ({ icon, size = '1em', color = null, className = '' }) => {
   const matchingPrefix = Object.keys(iconComponents).find((key) => icon.startsWith(key)) as IconKey | undefined
   if (matchingPrefix) {
     const importModule = iconComponents[matchingPrefix] as any
     const IconComponent = dynamic(() => importModule().then((allIcons: Record<string, IconType>) => allIcons[icon]))
     // @ts-ignore
-    return <IconComponent size={size} color={color} />
+    return <IconComponent className={className} size={size} color={color} />
   }
 
   return <></>

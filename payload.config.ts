@@ -1,15 +1,16 @@
-import path from 'path'
+import { COLLECTION_SLUG_MEDIA, COLLECTION_SLUG_PAGE, media, pages, sessions, users } from '@/payload/collections'
+import { siteSettings } from '@/payload/globals/site-settings'
+import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { resendAdapter } from '@payloadcms/email-resend'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
+import path from 'path'
 import { buildConfig } from 'payload/config'
 import { en } from 'payload/i18n/en'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
-import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
-import { media, pages, users, sessions, COLLECTION_SLUG_MEDIA } from '@/payload/collections'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import nodemailer from 'nodemailer'
-import { siteSettings } from '@/payload/globals/site-settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,22 +26,19 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.MONGODB_URI || ''
   }),
-  email: nodemailerAdapter({
+  email: resendAdapter({
     defaultFromAddress: 'payload@livog.se',
-    defaultFromName: 'Payload',
-    transport: nodemailer.createTransport({
-      host: 'smtp.resend.com',
-      port: 465,
-      auth: {
-        user: 'resend',
-        pass: process.env.AUTH_RESEND_KEY
-      }
-    })
+    defaultFromName: 'Payload Admin',
+    apiKey: process.env.AUTH_RESEND_KEY || ''
   }),
   i18n: {
     supportedLanguages: { en }
   },
   plugins: [
+    nestedDocsPlugin({
+      collections: [COLLECTION_SLUG_PAGE],
+      generateURL: generateBreadcrumbsUrl
+    }),
     s3StoragePlugin({
       collections: {
         [COLLECTION_SLUG_MEDIA]: {
