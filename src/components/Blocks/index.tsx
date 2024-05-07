@@ -1,6 +1,7 @@
 import HeroBanner from './HeroBanner'
 import FeaturedGrid from './FeaturedGrid'
 import LogoMarquee from './LogoMarquee'
+import Faq from './Faq'
 
 export type AdditionalBlockProps = {
   blockIndex: number
@@ -10,7 +11,8 @@ export type AdditionalBlockProps = {
 const blockComponents = {
   HeroBanner: HeroBanner,
   FeaturesGrid: FeaturedGrid,
-  LogoMarquee: LogoMarquee
+  LogoMarquee: LogoMarquee,
+  Faq: Faq
 }
 
 const Blocks = ({ blocks, locale }: any) => {

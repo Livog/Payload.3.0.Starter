@@ -66,7 +66,7 @@ export interface User {
 export interface Page {
   id: string;
   title?: string | null;
-  blocks?: (HeroBannerBlock | FeaturesGridBlock | LogoMarqueeBlock)[] | null;
+  blocks?: (HeroBannerBlock | FeaturesGridBlock | LogoMarqueeBlock | FaqBlock)[] | null;
   slug?: string | null;
   path?: string | null;
   parent?: (string | null) | Page;
@@ -1033,6 +1033,37 @@ export interface LogoMarqueeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'LogoMarquee';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock".
+ */
+export interface FaqBlock {
+  title?: string | null;
+  questions?:
+    | {
+        question?: string | null;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Faq';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -4,7 +4,7 @@ import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
 import path from 'path'
 import { buildConfig } from 'payload/config'
@@ -16,7 +16,9 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()]
+  }),
   globals: [siteSettings],
   collections: [users, pages, media, sessions],
   secret: process.env.AUTH_SECRET || '',

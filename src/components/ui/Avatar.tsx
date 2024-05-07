@@ -36,7 +36,7 @@ export const Avatar = ({ image, name, className, ...props }: AvatarProps) => {
       {image ? (
         <Image width={100} height={100} src={image} alt={`Avatar image of ${name}`} className="object-cover object-center" />
       ) : (
-        <span>{getInitials(name)}</span>
+        <span className="text-xs font-bold">{getInitials(name)}</span>
       )}
     </div>
   )

@@ -23,7 +23,7 @@ const ProfileMenu = async () => {
     <div className="flex flex-row items-center gap-x-2">
       <DropdownMenu closeOnPathChange={true}>
         <DropdownMenuTrigger className="inline-flex items-center gap-x-2 p-2 text-base font-medium outline-none">
-          <Avatar image={user?.imageUrl} name={String(user?.name || 'User')} className="h-6 w-6" /> {firstName}
+          <Avatar image={user?.imageUrl} name={String(user?.name || 'User')} className="h-7 w-7 dark:bg-zinc-700" /> {firstName}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[200px] origin-top-right" align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>

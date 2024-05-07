@@ -56,8 +56,8 @@ const ProfileForm = ({ user }: { user: User }) => {
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4 pt-6">
-              <Label className="col-span-2 text-base" htmlFor="password">
+            <CardContent className="grid grid-cols-1 gap-x-6 gap-y-4 pt-6 md:grid-cols-2">
+              <Label className="text-base md:col-span-2" htmlFor="password">
                 Change Password
               </Label>
               <Fieldset>

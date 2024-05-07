@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/Label'
 import GithubLogo from '@/public/icons/github-logo.svg'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition, type ComponentProps } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -39,7 +39,6 @@ const SignInForm = () => {
     }
   })
   const {
-    register,
     handleSubmit,
     formState: { errors },
     watch

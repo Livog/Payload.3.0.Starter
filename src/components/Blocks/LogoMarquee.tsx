@@ -31,7 +31,7 @@ export default async function LogoMarquee({ logos, speed }: LogoMarqueeBlock & A
   const formattedLogos = results.filter((result) => result !== null) as MediaWithSvg[]
 
   return (
-    <section className="py-6">
+    <section className="max-w-[100vw] overflow-x-hidden py-6">
       <Container className="px-0">
         <Marquee blur={false} speed={speed}>
           {formattedLogos.map((logo, index) => (

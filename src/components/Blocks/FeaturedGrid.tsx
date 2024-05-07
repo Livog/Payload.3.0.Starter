@@ -3,7 +3,7 @@ import ReactIcon from '@/components/ReactIcon'
 import Container from '@/components/Container'
 import { FeaturesGridBlock } from '~/payload-types'
 import isNotNull from '@/payload/utils/isNotNull'
-import { AdditionalBlockProps } from '@/components/Blocks'
+import type { AdditionalBlockProps } from '@/components/Blocks'
 
 export default function FeaturedGrid({ features, preTitle, title, description }: FeaturesGridBlock & AdditionalBlockProps) {
   return (
@@ -19,7 +19,7 @@ export default function FeaturedGrid({ features, preTitle, title, description }:
           {isNotNull(description) && <p className="mx-auto mt-4 max-w-2xl text-xl text-zinc-700 dark:text-zinc-500">{description}</p>}
         </div>
         <div className="mt-10">
-          <dl className="space-y-10 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 md:space-y-0">
+          <dl className="space-y-10 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-16 md:space-y-0">
             {features.map((feature, index) => (
               <div key={index} className="flex flex-col gap-x-3 gap-y-4">
                 <div
