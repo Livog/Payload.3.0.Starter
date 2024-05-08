@@ -13,7 +13,7 @@ type SignUpProps = SignUpFormData & { redirectTo?: string }
 
 export const signUp = async ({ firstName, lastName, email, password, redirectTo }: SignUpProps) => {
   const payload = await getPayload()
-  const maybeExistingUser = await getUserByEmail({ email, payload, collection: COLLECTION_SLUG_USER })
+  const maybeExistingUser = await getUserByEmail({ email, payload })
 
   if (maybeExistingUser) {
     return {

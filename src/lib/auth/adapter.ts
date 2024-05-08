@@ -17,19 +17,11 @@ type CollectionTypeMap = {
   sessions: typeof COLLECTION_SLUG_SESSIONS
 }
 
-export const getUserByEmail = async ({
-  payload,
-  email,
-  collection
-}: {
-  payload: Payload
-  email: string
-  collection: typeof COLLECTION_SLUG_USER
-}): Promise<User | null> => {
+export const getUserByEmail = async ({ payload, email }: { payload: Payload; email: string }): Promise<User | null> => {
   const { docs } = await (
     await payload
   ).find({
-    collection,
+    collection: COLLECTION_SLUG_USER,
     where: { email: { equals: email } }
   })
   return docs.at(0) ?? null
@@ -38,62 +30,22 @@ export const getUserByEmail = async ({
 export const getUserByAccount = async ({
   payload,
   providerAccountId,
-  provider,
-  collection
+  provider
 }: {
   payload: Payload
   providerAccountId: string
   provider: string
-  collection: typeof COLLECTION_SLUG_USER
 }): Promise<User | null> => {
   const { docs } = await (
     await payload
   ).find({
-    collection,
+    collection: COLLECTION_SLUG_USER,
     where: {
       'accounts.provider': { equals: provider },
       'accounts.providerAccountId': { equals: providerAccountId }
     }
   })
   return docs.at(0) ?? null
-}
-
-export const getSessionAndUser = async ({
-  payload,
-  sessionToken,
-  collection
-}: {
-  payload: Payload
-  sessionToken: string
-  collection: typeof COLLECTION_SLUG_SESSIONS
-}): Promise<{ session: Session; user: User } | null> => {
-  const { docs: sessions } = await (
-    await payload
-  ).find({
-    collection,
-    depth: 1, // So that we get user object aswell.
-    where: { sessionToken: { equals: sessionToken } }
-  })
-  const session = sessions.at(0)
-
-  if (!session || !session.user || typeof session.user !== 'object') return null
-
-  const sessionExpires = new Date(session?.expires || 0)
-
-  if (!isWithinExpirationDate(sessionExpires)) {
-    await (
-      await payload
-    ).delete({
-      collection,
-      where: { sessionToken: { equals: sessionToken } }
-    })
-    if (process.env.AUTH_VERPOSE) {
-      console.log('Deleted expired session', sessionToken)
-    }
-    return null
-  }
-
-  return { session, user: session?.user }
 }
 
 type Payload = BasePayload<GeneratedTypes> | Promise<BasePayload<GeneratedTypes>>
@@ -164,7 +116,7 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
     },
 
     async getUserByEmail(email) {
-      const user = await getUserByEmail({ payload, email, collection: userCollectionName })
+      const user = await getUserByEmail({ payload, email })
       if (process.env.AUTH_VERPOSE) {
         console.log('getUserByEmail', user, 'email', email)
       }
@@ -235,7 +187,7 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
     },
 
     async unlinkAccount({ provider, providerAccountId }) {
-      const user = await getUserByAccount({ payload, provider, providerAccountId, collection: userCollectionName })
+      const user = await getUserByAccount({ payload, provider, providerAccountId })
       if (!user || !Array.isArray(user?.accounts)) return
       const updatedAccounts = user.accounts.filter((account) => account.provider !== provider || account.providerAccountId !== providerAccountId)
       await (
@@ -278,7 +230,7 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
     },
 
     async getUserByAccount({ providerAccountId, provider }) {
-      const user = await getUserByAccount({ payload, provider, providerAccountId, collection: userCollectionName })
+      const user = await getUserByAccount({ payload, provider, providerAccountId })
       if (process.env.AUTH_VERPOSE) {
         console.log('getUserByAccount', user, 'providerAccountId', providerAccountId, 'provider', provider)
       }
@@ -305,16 +257,39 @@ export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions 
     },
 
     async getSessionAndUser(sessionToken) {
-      const maybeSessionAndUser = await getSessionAndUser({ payload, sessionToken, collection: sessionCollectionName })
-      if (!maybeSessionAndUser || !maybeSessionAndUser.user || typeof maybeSessionAndUser.user !== 'object') return null
-      const { session, user } = maybeSessionAndUser
+      const { docs: sessions } = await (
+        await payload
+      ).find({
+        collection: COLLECTION_SLUG_SESSIONS,
+        depth: 1, // So that we get user object aswell.
+        where: { sessionToken: { equals: sessionToken } }
+      })
+      const session = sessions.at(0)
+
+      if (!session || !session.user || typeof session.user !== 'object') return null
+
+      const sessionExpires = new Date(session?.expires || 0)
+
+      if (!isWithinExpirationDate(sessionExpires)) {
+        await (
+          await payload
+        ).delete({
+          collection: COLLECTION_SLUG_SESSIONS,
+          where: { sessionToken: { equals: sessionToken } }
+        })
+        if (process.env.AUTH_VERPOSE) {
+          console.log('Deleted expired session', sessionToken)
+        }
+        return null
+      }
+
       return {
         session: {
           sessionToken: session?.sessionToken,
           userId: typeof session?.user === 'string' ? session?.user : session?.user?.id,
           expires: new Date(session?.expires || 0)
         },
-        user: ensureAdapterUser(user)
+        user: ensureAdapterUser(session?.user)
       }
     },
 

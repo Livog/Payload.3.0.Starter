@@ -27,7 +27,8 @@ const handleLogoutResponse = async (request: NextRequest): Promise<NextResponse 
 
 const validateJwtTokenAndLogoutOnFailure = async (request: NextRequest): Promise<NextResponse | true> => {
   const cookieName = getAuthJsCookieName()
-  const token = await getAuthJsToken(request)
+  const headers = request.headers
+  const token = await getAuthJsToken(headers)
 
   if ((token == null && request.cookies.has(cookieName)) || (token?.exp != null && !isWithinExpirationDate(new Date(token.exp * 1000)))) {
     const response = NextResponse.redirect(request.url)

@@ -40,7 +40,7 @@ export const updateUser = async (userData: User) => {
       data: sanitizedUserData
     })
     .then((user) => ({ ...user, collection: COLLECTION_SLUG_USER }))) as User & { collection: typeof COLLECTION_SLUG_USER }
-
+  // No need to revalidate here, because that is handled in afterChange hook in Payload.
   const fieldsToSign = getFieldsToSign({
     user: newUser,
     email: session.user.email,

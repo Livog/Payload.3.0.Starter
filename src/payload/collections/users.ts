@@ -1,10 +1,8 @@
-import { PayloadAdapter, getUserByEmail } from '@/lib/auth/adapter'
-import authConfig, { ADMIN_ACCESS_ROLES, DEFAULT_USER_ROLE } from '@/lib/auth/config'
-import { getAuthJsCookieName, mockRequestAndResponseFromHeadersForNextAuth } from '@/lib/auth/edge'
+import { ADMIN_ACCESS_ROLES, DEFAULT_USER_ROLE } from '@/lib/auth/config'
+import { getAuthJsCookieName, getCurrentUser } from '@/lib/auth/edge'
+import { revalidateUser } from '@/lib/payload/actions'
 import { isAdmin, isAdminOrCurrentUser } from '@/payload/access'
 import parseCookieString from '@/utils/parseCookieString'
-import NextAuth from 'next-auth'
-import { isWithinExpirationDate } from '@/utils/isWithinExperationDate'
 import type { CollectionConfig } from 'payload/types'
 
 const ADMIN_AUTH_GROUP = 'Auth'
@@ -66,23 +64,22 @@ export const users: CollectionConfig = {
     strategies: [
       {
         name: 'next-auth',
-        /** @ts-ignore */
         authenticate: async ({ headers, payload }) => {
-          const { auth } = NextAuth({
-            ...authConfig,
-            adapter: PayloadAdapter(payload)
-          })
-          const { request, response } = mockRequestAndResponseFromHeadersForNextAuth({ headers })
-          const session = await auth(request, response)
-          const user = session?.user
-          if (!user || typeof user.email !== 'string' || (session?.expires && !isWithinExpirationDate(new Date(session.expires)))) return null
-
-          const dbUser = await getUserByEmail({ payload, email: user.email, collection: COLLECTION_SLUG_USER })
+          const currentUser = await getCurrentUser({ headers, payload, cache: true })
+          if (!currentUser) return null
           return {
-            ...dbUser,
+            ...currentUser,
             collection: COLLECTION_SLUG_USER
           }
         }
+      }
+    ]
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, req }) => {
+        const payload = req.payload
+        await revalidateUser(doc, payload)
       }
     ]
   },

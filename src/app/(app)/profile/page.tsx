@@ -6,8 +6,8 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 const ProfilePage = async () => {
-  const authResult = await getCurrentUser()
-  if (!authResult || !authResult?.user) return redirect('/sign-in')
+  const user = await getCurrentUser()
+  if (!user) return redirect('/sign-in')
   return (
     <Container>
       <div className="pb-10 pt-[100px]">
@@ -16,9 +16,7 @@ const ProfilePage = async () => {
             <nav>
               <ul className="flex flex-col gap-y-2 dark:text-zinc-500">
                 <li>
-                  <Link
-                    href="/profile"
-                    className="flex items-center gap-x-2 transition-all duration-300 ease-in-out hover:text-zinc-900 dark:hover:text-white">
+                  <Link href="/profile" className="flex items-center gap-x-2 transition-all duration-300 ease-in-out hover:text-zinc-900 dark:hover:text-white">
                     <UserRound className="h-5 w-5" />
                     Profile
                   </Link>
@@ -27,7 +25,7 @@ const ProfilePage = async () => {
             </nav>
           </div>
           <div className="col-span-3">
-            <ProfileForm user={authResult?.user} />
+            <ProfileForm user={user} />
           </div>
         </div>
       </div>

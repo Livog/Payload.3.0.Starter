@@ -28,16 +28,7 @@ type CollapsibleTriggerProps = React.ComponentPropsWithRef<'label'> & {
   accordionId?: string
 }
 
-const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
-  id,
-  classNames = {},
-  children,
-  className,
-  openByDefault,
-  accordionId,
-  ref,
-  ...props
-}) => (
+const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({ id, classNames = {}, children, className, openByDefault, accordionId, ref, ...props }) => (
   <>
     <input type={accordionId ? 'radio' : 'checkbox'} name={accordionId || undefined} id={id} className="peer hidden" defaultChecked={openByDefault} />
     <label
@@ -48,8 +39,8 @@ const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
       {children}
       <span
         className={cn(
-          `h-8 w-8 justify-self-end p-1 text-black outline-none transition-transform duration-[var(--animation-duration)] peer-checked:group-[.collapsible]:rotate-90
-          dark:text-white`,
+          `h-8 w-8 justify-self-end p-1 text-black outline-none transition-transform [transition-duration:var(--animation-duration)]
+          peer-checked:group-[.collapsible]:rotate-90 dark:text-white`,
           classNames?.icon
         )}>
         <HiChevronRight className="h-full w-full" />
@@ -60,7 +51,7 @@ const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
 CollapsibleTrigger.displayName = 'CollapsibleTrigger'
 
 const cvaCollapsibleContent = cva(
-  `group grid origin-top transform-gpu grid-rows-[0fr] overflow-hidden transition-all duration-[--animation-duration] ease-in-out
+  `group grid origin-top transform-gpu grid-rows-[0fr] overflow-hidden transition-all ease-in-out [transition-duration:var(--animation-duration)]
   peer-checked:grid-rows-[1fr] peer-[:not(:checked)]:!py-0`,
   {
     variants: {
@@ -74,9 +65,9 @@ const cvaCollapsibleContent = cva(
           [&>*]:invisible [&>*]:opacity-0 [&>*]:transition-all [&>*]:ease-in-out peer-checked:[&>*]:visible peer-checked:[&>*]:opacity-100`
         ],
         'scale-fade': [
-          `origin-top scale-95 opacity-0 [transition-duration:var(--animation-duration)] peer-checked:scale-100 peer-checked:opacity-100
-          [&>*]:invisible [&>*]:opacity-0 [&>*]:transition-all [&>*]:ease-in-out [&>*]:[transition-duration:var(--animation-duration)]
-          peer-checked:[&>*]:visible peer-checked:[&>*]:opacity-100`
+          `origin-top scale-95 opacity-0 [transition-duration:var(--animation-duration)] peer-checked:scale-100 peer-checked:opacity-100 [&>*]:invisible
+          [&>*]:opacity-0 [&>*]:transition-all [&>*]:ease-in-out [&>*]:[transition-duration:var(--animation-duration)] peer-checked:[&>*]:visible
+          peer-checked:[&>*]:opacity-100`
         ],
         none: '[&>*]:visible'
       }
