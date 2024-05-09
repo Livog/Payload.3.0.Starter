@@ -16,23 +16,31 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  globals: [siteSettings],
+  collections: [users, pages, media, sessions],
+  admin: {
+    livePreview: {
+      url: ({ data, locale }) => `${process.env.NEXT_PUBLIC_SITE_URL}/preview${data.path}${locale ? `?locale=${locale.code}` : ''}`,
+      collections: [COLLECTION_SLUG_PAGE]
+    }
+  },
+  cors: [process.env.NEXT_PUBLIC_S3_PUBLIC_URL || ''],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()]
   }),
-  globals: [siteSettings],
-  collections: [users, pages, media, sessions],
   secret: process.env.AUTH_SECRET || '',
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts')
-  },
   db: mongooseAdapter({
     url: process.env.MONGODB_URI || ''
   }),
-  email: resendAdapter({
-    defaultFromAddress: 'payload@livog.se',
-    defaultFromName: 'Payload Admin',
-    apiKey: process.env.AUTH_RESEND_KEY || ''
-  }),
+  serverURL: process.env.NEXT_PUBLIC_SITE_URL,
+  email:
+    process.env.RESENT_DEFAULT_EMAIL && process.env.AUTH_RESEND_KEY
+      ? resendAdapter({
+          defaultFromAddress: process.env.RESENT_DEFAULT_EMAIL,
+          defaultFromName: 'Payload Admin',
+          apiKey: process.env.AUTH_RESEND_KEY || ''
+        })
+      : undefined,
   i18n: {
     supportedLanguages: { en }
   },
@@ -64,5 +72,8 @@ export default buildConfig({
       }
     })
   ],
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts')
+  },
   sharp
 })

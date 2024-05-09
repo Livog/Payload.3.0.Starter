@@ -101,6 +101,7 @@ export interface HeroBannerBlock {
  */
 export interface Media {
   id: string;
+  rawContent?: string | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;

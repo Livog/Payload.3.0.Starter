@@ -1,4 +1,3 @@
-import 'server-only'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import { IconBaseProps, IconType } from 'react-icons/lib'
