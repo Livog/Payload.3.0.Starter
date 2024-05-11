@@ -10,6 +10,7 @@ import { Card, CardContent, CardFooter } from '../ui/Card'
 import { updateUser } from './actions'
 import { useFormState } from 'react-dom'
 import { toast } from 'sonner'
+import DeleteAccountSection from './DeleteAccountSection'
 
 const ProfileForm = ({ user }: { user: User }) => {
   const [formData, setFormData] = useState<User>(user)
@@ -70,13 +71,7 @@ const ProfileForm = ({ user }: { user: User }) => {
                 <Label className="text-left" htmlFor="confirmPassword">
                   Confirm Password
                 </Label>
-                <Input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Confirm your new password"
-                  type="password"
-                  onChange={handleOnChange}
-                />
+                <Input id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password" type="password" onChange={handleOnChange} />
               </Fieldset>
             </CardContent>
           </Card>
@@ -84,19 +79,7 @@ const ProfileForm = ({ user }: { user: User }) => {
             {isPending ? 'Updating...' : 'Update Profile'}
           </Button>
         </form>
-        <h2 className="!mt-10 text-xl font-semibold">Danger Zone</h2>
-        <Card className="border-red-500/40 dark:border-red-500/50">
-          <CardContent className="space-y-2 pt-6">
-            <h4 className="font-semibold">Delete Account</h4>
-            <p className="text-sm text-zinc-500">
-              Permanently remove your Personal Account and all of its contents from the platform. This action is not reversible, so please continue
-              with caution.
-            </p>
-          </CardContent>
-          <CardFooter className="flex justify-end bg-red-500/10 p-3">
-            <Button color="red">Delete Accout</Button>
-          </CardFooter>
-        </Card>
+        <DeleteAccountSection />
       </div>
     </div>
   )

@@ -14,7 +14,8 @@ export default {
     maxAge: SESSION_MAX_AGE
   },
   pages: {
-    signIn: '/sign-in'
+    signIn: '/sign-in',
+    newUser: '/sign-up'
   },
   session: { strategy: SESSION_STRATEGY, maxAge: SESSION_MAX_AGE },
   providers: [

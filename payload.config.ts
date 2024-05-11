@@ -36,9 +36,9 @@ export default buildConfig({
   }),
   serverURL: process.env.NEXT_PUBLIC_SITE_URL,
   email:
-    process.env.RESENT_DEFAULT_EMAIL && process.env.AUTH_RESEND_KEY
+    process.env.RESEND_DEFAULT_EMAIL && process.env.AUTH_RESEND_KEY
       ? resendAdapter({
-          defaultFromAddress: process.env.RESENT_DEFAULT_EMAIL,
+          defaultFromAddress: process.env.RESEND_DEFAULT_EMAIL,
           defaultFromName: 'Payload Admin',
           apiKey: process.env.AUTH_RESEND_KEY || ''
         })

@@ -12,6 +12,7 @@ import { useEffect, useState, useTransition, type ComponentProps } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { signUp } from './actions'
+import FormWrapper from '../FormWrapper'
 
 export const signUpFormSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required' }),
@@ -60,87 +61,87 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="w-full max-w-[440px] space-y-4 rounded-lg bg-black/5 p-1 pb-5 dark:bg-zinc-800 dark:text-white">
-      <div className="bg-white px-6 py-10 dark:bg-zinc-900">
-        <h2 className="mb-3 text-center text-2xl font-medium">Create Your Account</h2>
-        <p className="mb-5 text-center text-zinc-500">Please enter your details to sign up.</p>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {backendSignUpResponse && !backendSignUpResponse?.success && backendSignUpResponse?.error ? (
-              <Alert color="red">{backendSignUpResponse.error.message}</Alert>
-            ) : null}
-            {backendSignUpResponse && backendSignUpResponse?.success ? <Alert color="green">Account created! Redirecting...</Alert> : null}
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <FormControl>
-                    <Input type="text" placeholder="John" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors.firstName && errors.firstName.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <FormControl>
-                    <Input type="text" placeholder="Doe" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors.lastName && errors.lastName.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="email">E-mail</Label>
-                  <FormControl>
-                    <Input type="email" autoComplete="email" placeholder="john.doe@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors.email && errors.email.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="password">Password</Label>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="● ● ● ● ● ● ● ● ●"
-                      autoComplete="new-password"
-                      {...field}
-                      className="placeholder:-translate-y-[2px] placeholder:text-[10px]"
-                    />
-                  </FormControl>
-                  <FormMessage>{errors.password && errors.password.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isPending} className="w-full">
-              {isPending ? 'Creating account...' : 'Sign Up'}
-            </Button>
-          </form>
-        </Form>
-      </div>
-      <p className="mt-4 text-center text-zinc-500 dark:text-zinc-400">
-        Already have an account?{' '}
-        <Link tabIndex={10} className="text-black underline dark:text-white" href="/sign-in">
-          Sign In
-        </Link>
-      </p>
-    </div>
+    <FormWrapper
+      outerContent={
+        <p className="mb-3 mt-4 text-center text-zinc-500 dark:text-zinc-400">
+          Already have an account?{' '}
+          <Link tabIndex={10} className="text-black underline dark:text-white" href="/sign-in">
+            Sign In
+          </Link>
+        </p>
+      }>
+      <h2 className="mb-3 text-center text-2xl font-medium">Create Your Account</h2>
+      <p className="mb-5 text-center text-zinc-500">Please enter your details to sign up.</p>
+      <Form {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {backendSignUpResponse && !backendSignUpResponse?.success && backendSignUpResponse?.error ? (
+            <Alert color="red">{backendSignUpResponse.error.message}</Alert>
+          ) : null}
+          {backendSignUpResponse && backendSignUpResponse?.success ? <Alert color="green">Account created! Redirecting...</Alert> : null}
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="firstName">First Name</Label>
+                <FormControl>
+                  <Input type="text" placeholder="John" {...field} />
+                </FormControl>
+                <FormMessage>{errors.firstName && errors.firstName.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="lastName">Last Name</Label>
+                <FormControl>
+                  <Input type="text" placeholder="Doe" {...field} />
+                </FormControl>
+                <FormMessage>{errors.lastName && errors.lastName.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="email">E-mail</Label>
+                <FormControl>
+                  <Input type="email" autoComplete="email" placeholder="john.doe@example.com" {...field} />
+                </FormControl>
+                <FormMessage>{errors.email && errors.email.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="password">Password</Label>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="● ● ● ● ● ● ● ● ●"
+                    autoComplete="new-password"
+                    {...field}
+                    className="placeholder:-translate-y-[2px] placeholder:text-[10px]"
+                  />
+                </FormControl>
+                <FormMessage>{errors.password && errors.password.message}</FormMessage>
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? 'Creating account...' : 'Sign Up'}
+          </Button>
+        </form>
+      </Form>
+    </FormWrapper>
   )
 }
 

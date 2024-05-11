@@ -1,9 +1,11 @@
 'use server'
 
-import { auth, unstable_update } from '@/lib/auth'
+import { auth, signOut, unstable_update } from '@/lib/auth'
 import { FIELDS_USER_IS_ALLOWED_TO_CHANGE } from '@/lib/auth/config'
 import { getPayload } from '@/lib/payload'
+import { revalidateUser } from '@/lib/payload/actions'
 import { COLLECTION_SLUG_USER, users } from '@/payload/collections'
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { getFieldsToSign } from 'payload/auth'
 import { User } from '~/payload-types'
@@ -48,4 +50,21 @@ export const updateUser = async (userData: User) => {
   })
   const newSession = await unstable_update({ user: fieldsToSign })
   return newSession
+}
+
+export const deleteUser = async () => {
+  const session = await auth()
+  if (!session || !session.user) {
+    redirect('/sign-in')
+  }
+  const user = session.user
+  const payload = await getPayload()
+  revalidateUser(user, payload)
+  await payload.delete({
+    collection: COLLECTION_SLUG_USER,
+    id: user.id
+  })
+  await signOut()
+  revalidatePath('/')
+  redirect('/')
 }
