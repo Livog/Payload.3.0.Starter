@@ -10,7 +10,7 @@ This boilerplate uses:
 - 📝 Lexical Component (RSC) (Not HTML Saved 🤩)
 - 🖼️ Import SVG as React Component (SVGR)
 - 📧 [Email with Resend](https://resend.com)
-- 📦 [S3/Cloudflare R2 Cloud Storage](https://github.com/payloadcms/plugin-cloud-storage)
+- 📦 [S3/Cloudflare R2 Cloud Storage](https://github.com/payloadcms/payload/tree/main/packages/plugin-cloud-storage)
 - 🧩 [shadcn/ui](https://ui.shadcn.com/docs)
 
 ## About

@@ -52,6 +52,8 @@ const pathField = (overrides?: Partial<Field>): Field =>
       hooks: {
         beforeValidate: [
           async ({ collection, req, value, siblingData, originalDoc, operation }) => {
+            // This can happen if auto save is on.
+            if (operation === 'create' && value == null && (Object.keys(originalDoc).length === 0 || Object.keys(siblingData).length === 0)) return value
             const { payload } = req
             if (!payload) return value // If not serverside exist
             const currentDoc = { ...originalDoc, ...siblingData }

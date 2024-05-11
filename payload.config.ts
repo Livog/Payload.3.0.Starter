@@ -25,8 +25,8 @@ export default buildConfig({
       collections: [COLLECTION_SLUG_PAGE]
     }
   },
-  cors: [process.env.NEXT_PUBLIC_S3_PUBLIC_URL || ''],
-  csrf: [process.env.NEXT_PUBLIC_S3_PUBLIC_URL || ''],
+  cors: [`${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
+  csrf: [process.env.NEXT_PUBLIC_SITE_URL || ''],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()]
   }),
@@ -56,7 +56,7 @@ export default buildConfig({
         [COLLECTION_SLUG_MEDIA]: {
           disableLocalStorage: true,
           generateFileURL: (args: any) => {
-            return `${process.env.NEXT_PUBLIC_S3_PUBLIC_URL}/${process.env.NEXT_PUBLIC_S3_BUCKET}/${args.prefix}/${args.filename}`
+            return `https://${process.env.NEXT_PUBLIC_S3_HOSTNAME}/${process.env.NEXT_PUBLIC_S3_BUCKET}/${args.prefix}/${args.filename}`
           },
           prefix: 'media'
         }

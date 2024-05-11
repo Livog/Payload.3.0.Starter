@@ -5,6 +5,7 @@ const FeaturedGrid = dynamic(() => import('./FeaturedGrid'))
 const LogoMarquee = dynamic(() => import('./LogoMarquee'))
 const Faq = dynamic(() => import('./Faq'))
 const Form = dynamic(() => import('./Form'))
+const RichText = dynamic(() => import('./RichText'))
 
 export type AdditionalBlockProps = {
   blockIndex: number
@@ -16,7 +17,8 @@ const blockComponents = {
   FeaturesGrid: FeaturedGrid,
   LogoMarquee: LogoMarquee,
   Faq: Faq,
-  FormBlock: Form
+  FormBlock: Form,
+  RichText: RichText
 }
 
 const Blocks = ({ blocks, locale }: any) => {
