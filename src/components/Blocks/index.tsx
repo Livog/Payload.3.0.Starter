@@ -1,7 +1,10 @@
-import HeroBanner from './HeroBanner'
-import FeaturedGrid from './FeaturedGrid'
-import LogoMarquee from './LogoMarquee'
-import Faq from './Faq'
+import dynamic from 'next/dynamic'
+
+const HeroBanner = dynamic(() => import('./HeroBanner'))
+const FeaturedGrid = dynamic(() => import('./FeaturedGrid'))
+const LogoMarquee = dynamic(() => import('./LogoMarquee'))
+const Faq = dynamic(() => import('./Faq'))
+const Form = dynamic(() => import('./Form'))
 
 export type AdditionalBlockProps = {
   blockIndex: number
@@ -12,7 +15,8 @@ const blockComponents = {
   HeroBanner: HeroBanner,
   FeaturesGrid: FeaturedGrid,
   LogoMarquee: LogoMarquee,
-  Faq: Faq
+  Faq: Faq,
+  FormBlock: Form
 }
 
 const Blocks = ({ blocks, locale }: any) => {

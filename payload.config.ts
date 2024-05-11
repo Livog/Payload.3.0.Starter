@@ -3,6 +3,7 @@ import { siteSettings } from '@/payload/globals/site-settings'
 import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { resendAdapter } from '@payloadcms/email-resend'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
@@ -25,6 +26,7 @@ export default buildConfig({
     }
   },
   cors: [process.env.NEXT_PUBLIC_S3_PUBLIC_URL || ''],
+  csrf: [process.env.NEXT_PUBLIC_S3_PUBLIC_URL || ''],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()]
   }),
@@ -69,6 +71,12 @@ export default buildConfig({
           accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string
         }
+      }
+    }),
+    formBuilderPlugin({
+      redirectRelationships: [COLLECTION_SLUG_PAGE],
+      fields: {
+        state: false
       }
     })
   ],

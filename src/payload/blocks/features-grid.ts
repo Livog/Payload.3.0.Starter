@@ -1,7 +1,7 @@
 import type { Block } from 'payload/types'
 import iconField from '@/payload/fields/icon'
 
-export const featuresGrid: Block = {
+const FeaturesGrid: Block = {
   slug: 'FeaturesGrid',
   interfaceName: 'FeaturesGridBlock',
   fields: [
@@ -39,3 +39,5 @@ export const featuresGrid: Block = {
     }
   ]
 }
+
+export default FeaturesGrid

@@ -13,9 +13,10 @@ export const getAuthJsCookieName = () => (process.env.NODE_ENV === 'production' 
 
 export const getAuthJsToken = async (headers: Headers) => {
   const cookieName = getAuthJsCookieName()
+  const cookieString = headers ? headers.get('Cookie') || '' : ''
   const request = {
     headers,
-    cookies: parseCookie(headers.get('Cookie') || '')
+    cookies: parseCookie(cookieString)
   }
   const cookieValue = request.cookies.get(cookieName)
   if (!cookieValue) return null

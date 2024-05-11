@@ -1,7 +1,7 @@
 import { COLLECTION_SLUG_MEDIA } from '@/payload/collections/media'
 import type { Block } from 'payload/types'
 
-export const logoMarquee: Block = {
+const LogoMarquee: Block = {
   slug: 'LogoMarquee',
   interfaceName: 'LogoMarqueeBlock',
   fields: [
@@ -32,3 +32,5 @@ export const logoMarquee: Block = {
     }
   ]
 }
+
+export default LogoMarquee

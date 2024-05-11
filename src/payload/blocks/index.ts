@@ -1,7 +1,8 @@
 import Faq from './faq'
-import { featuresGrid } from './features-grid'
-import { heroBanner } from './hero-banner'
-import { logoMarquee } from './logo-marquee'
+import FeaturesGrid from './features-grid'
+import HeroBanner from './hero-banner'
+import LogoMarquee from './logo-marquee'
+import FormBlock from './form'
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default [heroBanner, featuresGrid, logoMarquee, Faq]
+export default [HeroBanner, FeaturesGrid, LogoMarquee, Faq, FormBlock]

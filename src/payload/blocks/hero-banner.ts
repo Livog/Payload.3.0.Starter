@@ -1,7 +1,7 @@
 import type { Block } from 'payload/types'
 import { COLLECTION_SLUG_MEDIA } from '@/payload/collections/media'
 
-export const heroBanner: Block = {
+const HeroBanner: Block = {
   slug: 'HeroBanner',
   interfaceName: 'HeroBannerBlock',
   fields: [
@@ -47,3 +47,5 @@ export const heroBanner: Block = {
     }
   ]
 }
+
+export default HeroBanner
