@@ -19,8 +19,8 @@ const Footer = async () => {
             <div className="mt-6 flex items-center space-x-4"></div>
           </div>
           <nav
-            className="mr-auto grid w-full grid-cols-2 place-content-center gap-x-8 gap-y-2 md:col-span-2 [&>a:hover]:text-white [&>a]:text-zinc-500
-              [&>a]:transition-colors">
+            className="mr-auto grid w-full grid-cols-2 place-content-center gap-x-8 gap-y-2 md:col-span-2 [&>a:hover]:text-zinc-950 dark:[&>a:hover]:text-white
+              [&>a]:text-zinc-500 [&>a]:transition-colors">
             <Link href="#">Home</Link>
             <Link href="#">Components</Link>
             <Link href="#">Pricing</Link>
