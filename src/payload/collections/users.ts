@@ -39,6 +39,8 @@ export const users: CollectionConfig = {
             throw new Error('Failed to refresh token')
           }
 
+          if (!data?.user) return new Response('No user found', { status: 401 })
+
           const responseCookies = parseCookieString(String(response.headers.get('Set-Cookie') || ''))
           const authCooke = responseCookies?.[getAuthJsCookieName()] ?? null
 

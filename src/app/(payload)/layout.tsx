@@ -6,6 +6,8 @@ import { RootLayout } from '@payloadcms/next/layouts'
 
 import '@payloadcms/next/css'
 
+export const dynamic = 'force-dynamic'
+
 type Args = {
   children: React.ReactNode
 }

@@ -2,10 +2,8 @@ import Container from '@/components/Container'
 import getSiteSettings from '@/payload/utils/fetchSiteSettings'
 import Logo from '@/public/logo.svg'
 import Link from 'next/link'
-import { Suspense } from 'react'
 import { Menu } from './Menu'
 import SignInOrProfile from './SignInOrProfile'
-import { Skeleton } from '@/components/ui/Skeleton'
 
 const Header = async () => {
   const settings = await getSiteSettings()
@@ -20,14 +18,7 @@ const Header = async () => {
           </Link>
         </div>
         <div className="order-2 flex flex-auto justify-end md:order-3 md:w-1/4">
-          <Suspense
-            fallback={
-              <Skeleton className="h-9 w-28 px-3">
-                <Skeleton className="h-6 w-6 rounded-full"></Skeleton>
-              </Skeleton>
-            }>
-            <SignInOrProfile />
-          </Suspense>
+          <SignInOrProfile />
         </div>
         <div className="order-3 flex items-center justify-end md:order-2 md:w-2/4 md:flex-auto md:justify-start">
           <Menu />

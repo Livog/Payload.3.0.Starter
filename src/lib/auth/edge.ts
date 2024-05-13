@@ -8,6 +8,7 @@ import { unstable_cache } from 'next/cache'
 import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from '@/payload/collections'
 import type { User } from '~/payload-types'
 import type { Payload } from 'payload'
+import { parseCookies } from 'payload/auth'
 
 export const getAuthJsCookieName = () => (process.env.NODE_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token')
 
@@ -27,6 +28,12 @@ export const getAuthJsToken = async (headers: Headers) => {
     secureCookie: process.env.NODE_ENV === 'production'
   })
   return token
+}
+
+export const hasAuthCookie = (headers: Headers): boolean => {
+  const cookies = parseCookies(headers)
+  const cookieName = getAuthJsCookieName()
+  return cookies.has(cookieName) || cookies.has('payload-token')
 }
 
 export const getUserIdOrSessionToken = async (headers: Headers): Promise<string | null> => {

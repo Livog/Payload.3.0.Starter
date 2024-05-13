@@ -54,7 +54,7 @@ export const siteSettings: GlobalConfig = {
         },
         {
           name: 'footer',
-          fields: [{ type: 'text', name: 'copyright' }]
+          fields: [{ type: 'text', name: 'copyright' }, menuItemsField('menuItems', 0)]
         }
       ]
     }

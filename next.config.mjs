@@ -25,6 +25,10 @@ const nextConfig = {
   },
   experimental: {
     ppr: true,
+    staleTimes: {
+      dynamic: 0,
+      static: 180
+    },
     turbo: {
       rules: {
         '*.svg': {
