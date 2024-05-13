@@ -10,7 +10,7 @@ export const revalidateUser = async (user: User, payload: Payload) => {
   revalidateTag(`payload-user-${user.id}`)
   revalidateTag(`payload-user-email-${user.email}`)
   if (SESSION_STRATEGY === 'database') {
-    const { docs: sessions } = await payload.find({ where: { user: { equals: user.id } }, collection: COLLECTION_SLUG_SESSIONS })
+    const { docs: sessions } = await (await payload).find({ where: { user: { equals: user.id } }, collection: COLLECTION_SLUG_SESSIONS })
     sessions.forEach((session) => {
       revalidateTag(`payload-user-session-${session.sessionToken}`)
     })

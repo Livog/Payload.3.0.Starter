@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "devsafe": "pnpm run clear:next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "analyze": "cross-env NODE_OPTIONS=--no-deprecation ANALYZE=true next build",
-    "generate:types": "rm -rf .next && payload generate:types",
+    "generate:types": "pnpm run clear:next && payload generate:types",
     "standalone-script": "tsx ./src/scripts/standalone-script.ts",
-    "email:dev": "email dev --dir ./src/emails"
+    "email:dev": "email dev --dir ./src/emails",
+    "clear:next": "rm -rf .next"
   },
   "engines": {
     "node": ">=20.0"

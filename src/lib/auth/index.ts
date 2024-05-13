@@ -5,6 +5,8 @@ import NextAuth from 'next-auth'
 import { getFieldsToSign as getFieldsToSignPayload } from 'payload/auth'
 import { PayloadAdapter } from './adapter'
 import authConfig from './config'
+import { revalidateUser } from '../payload/actions'
+import { User } from '~/payload-types'
 
 export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth(() => {
   const payload = getPayload()
@@ -49,6 +51,10 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth(() 
         }
 
         return session
+      },
+      async signIn({ user }) {
+        revalidateUser(user as User, payload as any)
+        return true
       }
     },
     ...authConfig
