@@ -1,6 +1,6 @@
-import { pathField, slugField } from '@/payload/fields'
+import { slugField, pathField } from '@/payload/fields'
 import type { CollectionConfig } from 'payload/types'
-import { blocksField } from '../fields/blocks'
+import { blocksField } from '@/payload/fields/blocks'
 
 export const COLLECTION_SLUG_PAGE = 'pages'
 

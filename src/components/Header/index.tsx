@@ -22,8 +22,8 @@ const Header = async () => {
         <div className="order-2 flex flex-auto justify-end md:order-3 md:w-1/4">
           <Suspense
             fallback={
-              <Skeleton className="h-9 w-28 bg-red-500 px-3">
-                <Skeleton className="h-6 w-6 rounded-full bg-white"></Skeleton>
+              <Skeleton className="h-9 w-28 px-3">
+                <Skeleton className="h-6 w-6 rounded-full"></Skeleton>
               </Skeleton>
             }>
             <SignInOrProfile />

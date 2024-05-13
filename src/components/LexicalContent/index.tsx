@@ -119,9 +119,7 @@ const LexicalContent: React.FC<{
       )
     }
 
-    const serializedChildren = node.children ? (
-      <LexicalContent key={ix} childrenNodes={node.children} locale={locale} lazyLoadImages={lazyLoadImages} />
-    ) : null
+    const serializedChildren = node.children ? <LexicalContent key={ix} childrenNodes={node.children} locale={locale} lazyLoadImages={lazyLoadImages} /> : null
     switch (node.type) {
       case 'linebreak':
         return <br key={ix} />
@@ -166,7 +164,7 @@ const LexicalContent: React.FC<{
             src={upload?.url}
             loading={lazyLoadImages ? 'lazy' : 'eager'}
             fetchPriority={lazyLoadImages ? 'low' : 'high'}
-            sizes="(max-width: 768) 65ch, 100vw"
+            sizes="(max-width: 768px) 65ch, 100vw"
             className="max-w-[calc(100%+40px)] translate-x-[-20px]"
             alt={upload?.alt || upload.filename}
           />
