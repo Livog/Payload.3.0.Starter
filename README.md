@@ -36,3 +36,112 @@ I've tried to demonstrate solutions for common challenges observed in the commun
 This project is still a work in progress, so your patience and feedback are appreciated. I'm just an enthusiast of what Payload solves and truly believe in the CMS as a formidable challenger to Wordpress.
 
 I'm always open to providing support, so feel free to reach out to me on Discord if you have questions or need assistance.
+
+
+# Installation Guide
+
+## Prerequisites
+
+Ensure you have `pnpm` installed. If not, install it using:
+```sh
+npm install -g pnpm
+```
+
+## Steps
+
+1. **Install Dependencies**:
+    ```sh
+    pnpm install
+    ```
+
+2. **Environment Variables**:
+    - Make a copy of `.env.example` and rename it to `.env`:
+      ```sh
+      cp .env.example .env
+      ```
+
+3. **Fill in the `.env` file**:
+
+    ### General Settings
+    ```env
+    NEXT_PUBLIC_SITE_URL=http://localhost:3000
+    ```
+
+    ### MongoDB URI
+    - Set up a MongoDB instance. For simplicity, you can use [Railway](https://railway.app?referralCode=2zFUkU).
+    - Get the MongoDB URI and fill in:
+      ```env
+      MONGODB_URI=<your_mongodb_uri>
+      ```
+
+    ### Authentication
+    - Generate a secret via CLI:
+      ```sh
+      openssl rand -base64 32
+      ```
+    - This will give you:
+      ```env
+      AUTH_SECRET=<your_generated_secret>
+      ```
+    - Fill in the following:
+      ```env
+      AUTH_TRUST_HOST=true
+      AUTH_VERPOSE=false
+      AUTH_URL=http://localhost:3000
+      ```
+
+    ### GitHub OAuth
+    - Create a GitHub OAuth application [here](https://github.com/settings/developers).
+    - Fill in:
+      ```env
+      AUTH_GITHUB_ID=<your_github_client_id>
+      AUTH_GITHUB_SECRET=<your_github_client_secret>
+      ```
+
+    ### Resend (Email)
+    - Sign up for Resend and get your API key [here](https://resend.com).
+    - Fill in:
+      ```env
+      RESEND_DEFAULT_EMAIL=<your_default_email>
+      AUTH_RESEND_KEY=<your_resend_api_key>
+      ```
+
+    ### Cloudflare R2 (S3)
+    - Sign up for Cloudflare R2 and get your credentials [here](https://dash.cloudflare.com). 
+    - Go to [Cloudflare R2 Overview]. The url is usually like: https://dash.cloudflare.com/{accountIdHere}/r2/overview
+    - Click on "Create Bucket" and save all credentials.
+    - After creating the bucket, return to the overview screen and click "Manage R2 API Tokens".
+    - If you don't have an API key, click "Create API Key". You should now have an `ACCESS_KEY_ID` and a `SECRET_ACCESS_KEY`.
+    - The region is usually `auto` for R2.
+    - Your `S3_ENDPOINT` is typically structured like this in Cloudflare:
+      ```
+      https://{accountId}.r2.cloudflarestorage.com/{bucketNameInLowerCaseAndKebabCase}
+      ```
+    - The `NEXT_PUBLIC_S3_HOSTNAME` should be the public hostname (e.g. my-bucket.example.com) for your bucket to enable caching and reduce B operations.
+
+    - Fill in:
+      ```env
+      S3_ACCESS_KEY_ID=<your_access_key_id>
+      S3_SECRET_ACCESS_KEY=<your_secret_access_key>
+      S3_REGION=auto
+      S3_ENDPOINT=https://{accountId}.r2.cloudflarestorage.com/{bucketNameInLowerCaseAndKebabCase}
+      NEXT_PUBLIC_S3_HOSTNAME=<your_s3_hostname>
+      NEXT_PUBLIC_S3_BUCKET=<your_s3_bucket>
+      ```
+
+## Optional Services
+
+If any of the sections above are not set, you need to comment out the respective code using these services.
+
+## Deployment
+
+### Railway.app
+- Create your project on [Railway](https://railway.app?referralCode=2zFUkU).
+- Add your MongoDB instance.
+- Add the Git repository as a new service.
+- Ensure that you also fill in the environment variables in the Railway interface.
+
+Any `localhost:3000` domains in your local `.env` file should be replaced with production URLs in your Railway Variables section.
+
+### Note:
+- Ensure to comment out code sections that rely on any of the above environment variables if they are not set.
