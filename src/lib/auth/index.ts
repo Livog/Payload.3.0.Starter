@@ -5,14 +5,14 @@ import { COLLECTION_SLUG_USER } from '@/payload/collections/config'
 import NextAuth from 'next-auth'
 import { getFieldsToSign as getFieldsToSignPayload } from 'payload/auth'
 import { PayloadAdapter } from './adapter'
-import authConfig from './config'
+import authConfig, { PAYLOAD_ADAPTER_CONFIG } from './config'
 import { revalidateUser } from '../payload/actions'
 import { User } from '~/payload-types'
 
 export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth(() => {
   const payload = getPayload()
   return {
-    adapter: PayloadAdapter(payload),
+    adapter: PayloadAdapter(payload, PAYLOAD_ADAPTER_CONFIG),
     callbacks: {
       async jwt({ token, user }) {
         const userId = (token?.id || token?.sub || user?.id) as string | number

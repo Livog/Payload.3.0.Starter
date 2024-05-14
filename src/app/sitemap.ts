@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getPayload } from '@/lib/payload'
-import { COLLECTION_SLUG_PAGE } from '@/payload/collections'
+import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayload()

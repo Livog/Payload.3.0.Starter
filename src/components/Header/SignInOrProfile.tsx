@@ -1,9 +1,9 @@
 import { hasAuthCookie } from '@/lib/auth/edge'
 import { headers } from 'next/headers'
 import Link from 'next/link'
-import ProfileMenu from './ProfileMenu'
 import { Suspense } from 'react'
 import { Skeleton } from '../ui/Skeleton'
+import ProfileMenu from './ProfileMenu'
 
 const SignInOrProfile = () => {
   const isSignedIn = hasAuthCookie(headers())

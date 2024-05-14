@@ -5,7 +5,7 @@ import type { AdapterUser } from '@auth/core/adapters'
 import type { Adapter, AdapterUser as BaseAdapterUser } from 'next-auth/adapters'
 import type { BasePayload, GeneratedTypes } from 'payload'
 import type { User } from '~/payload-types'
-import { DEFAULT_USER_ROLE, FIELDS_USER_IS_ALLOWED_TO_CHANGE, SESSION_MAX_AGE } from './config'
+import { PAYLOAD_ADAPTER_CONFIG } from './config'
 
 declare module '@auth/core/adapters' {
   // @ts-ignore
@@ -58,15 +58,17 @@ type PayloadAdapterOptions = {
 }
 
 export function PayloadAdapter(payload: Payload, options: PayloadAdapterOptions = {}): Adapter {
-  options.collectionNames ??= {}
-  options.collectionNames.users ??= COLLECTION_SLUG_USER
-  options.collectionNames.sessions ??= COLLECTION_SLUG_SESSIONS
-  options.defaultUserRole ||= DEFAULT_USER_ROLE
-  options.fieldsUserIsAllowedToChange ||= FIELDS_USER_IS_ALLOWED_TO_CHANGE
-  options.defaultMaxAge ||= SESSION_MAX_AGE
+  options = {
+    ...PAYLOAD_ADAPTER_CONFIG,
+    ...options,
+    collectionNames: {
+      ...PAYLOAD_ADAPTER_CONFIG.collectionNames,
+      ...options.collectionNames
+    }
+  } as const
 
-  const userCollectionName = options.collectionNames.users!
-  const sessionCollectionName = options.collectionNames.sessions!
+  const userCollectionName = options.collectionNames?.users || PAYLOAD_ADAPTER_CONFIG.collectionNames.users
+  const sessionCollectionName = options.collectionNames!.sessions || PAYLOAD_ADAPTER_CONFIG.collectionNames.sessions
 
   const ensureAdapterUser = (user: User): AdapterUser => {
     return {

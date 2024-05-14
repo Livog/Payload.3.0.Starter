@@ -1,10 +1,10 @@
 import { ADMIN_ACCESS_ROLES, DEFAULT_USER_ROLE } from '@/lib/auth/config'
-import { getAuthJsCookieName, getCurrentUser } from '@/lib/auth/edge'
+import { findAuthJsCookie, getCurrentUser } from '@/lib/auth/edge'
 import { revalidateUser } from '@/lib/payload/actions'
 import { isAdmin, isAdminOrCurrentUser } from '@/payload/access'
 import parseCookieString from '@/utils/parseCookieString'
 import type { CollectionConfig } from 'payload/types'
-import { COLLECTION_SLUG_USER, COLLECTION_SLUG_SESSIONS } from './config'
+import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from './config'
 
 const ADMIN_AUTH_GROUP = 'Auth'
 
@@ -40,12 +40,13 @@ export const users: CollectionConfig = {
           if (!data?.user) return new Response('No user found', { status: 401 })
 
           const responseCookies = parseCookieString(String(response.headers.get('Set-Cookie') || ''))
-          const authCooke = responseCookies?.[getAuthJsCookieName()] ?? null
-
+          const authCookie = findAuthJsCookie(responseCookies)
+          if (!authCookie) return new Response('No auth cookie found', { status: 401 })
+          const cookieValue = authCookie.value
           const responseBody = JSON.stringify({
             message: 'Token refresh successful',
-            refreshToken: authCooke?.value,
-            exp: authCooke && authCooke?.expires ? Math.floor(authCooke.expires.getTime() / 1000) : null,
+            refreshToken: cookieValue?.value,
+            exp: cookieValue && cookieValue?.expires ? Math.floor(cookieValue.expires.getTime() / 1000) : null,
             user: data.user
           })
 

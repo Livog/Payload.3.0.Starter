@@ -58,9 +58,6 @@ const createSchema = (form: FormType) => {
             validator = validator.refine((val) => val != null && val.trim() !== '', {
               message: `${field.label || 'Field'} is required`
             })
-            if (field.blockType === 'country') {
-              console.log(validator)
-            }
             break
           case 'number':
             validator = z.string().refine((val) => val != null && val.trim() !== '' && /^\d+$/.test(val), {

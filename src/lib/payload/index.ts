@@ -1,8 +1,7 @@
 import configPromise from '@payload-config'
 import { getPayloadHMR as getPayloadInstance } from '@payloadcms/next/utilities'
-import { getCurrentUser as edgeSafeGetCurrentUser } from '@/lib/auth/edge'
-import type { User } from '~/payload-types'
 import { headers as getHeaders } from 'next/headers'
+import type { User } from '~/payload-types'
 
 export async function getPayload(): ReturnType<typeof getPayloadInstance> {
   return getPayloadInstance({ config: await configPromise })
@@ -18,6 +17,5 @@ export async function getPayload(): ReturnType<typeof getPayloadInstance> {
 export async function getCurrentUser(): Promise<User | null> {
   const headers = getHeaders()
   const payload = await getPayload()
-  const user = await edgeSafeGetCurrentUser({ headers, payload, cache: true })
-  return user
+  return (await payload.auth({ headers })).user
 }

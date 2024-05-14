@@ -12,8 +12,11 @@ export const ADMIN_ACCESS_ROLES = ['admin']
 const payloadAdapterConfig = {
   collectionNames: {
     users: COLLECTION_SLUG_USER,
-    sessions: COLLECTION_SLUG_SESSIONS,
-  }
+    sessions: COLLECTION_SLUG_SESSIONS
+  },
+  defaultUserRole: DEFAULT_USER_ROLE,
+  fieldsUserIsAllowedToChange: FIELDS_USER_IS_ALLOWED_TO_CHANGE,
+  defaultMaxAge: SESSION_MAX_AGE
 } as const
 
 export const PAYLOAD_ADAPTER_CONFIG = payloadAdapterConfig

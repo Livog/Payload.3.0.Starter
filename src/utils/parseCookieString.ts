@@ -12,7 +12,7 @@ interface Cookies {
   [key: string]: CookieAttributes
 }
 
-export default function parseCookieString(cookieString: string): Cookies {
+export default function parseCookieString(cookieString: string): Map<string, CookieAttributes> {
   const cookieParts = cookieString.split(/,(?=\s*[^\s=;]+=[^;]*)/)
   const cookies: Cookies = {}
 
@@ -50,12 +50,12 @@ export default function parseCookieString(cookieString: string): Cookies {
       {
         value: decodeURIComponent(value),
         httponly: false,
-        secure: false,
-      } as Partial<CookieAttributes>,
+        secure: false
+      } as Partial<CookieAttributes>
     )
 
     cookies[decodeURIComponent(name)] = attributes as CookieAttributes
   })
 
-  return cookies
+  return new Map(Object.entries(cookies))
 }

@@ -25,6 +25,7 @@ const handleLogoutResponse = async (request: NextRequest): Promise<NextResponse 
   return response
 }
 
+/** WIP needs work */
 const validateJwtTokenAndLogoutOnFailure = async (request: NextRequest): Promise<NextResponse | true> => {
   const cookieName = getAuthJsCookieName()
   const headers = request.headers
@@ -40,7 +41,7 @@ const validateJwtTokenAndLogoutOnFailure = async (request: NextRequest): Promise
 
 export default async function middleware(request: NextRequest) {
   const sequentialMiddlewares = [handleLogoutResponse]
-  if (SESSION_STRATEGY === 'jwt') sequentialMiddlewares.push(validateJwtTokenAndLogoutOnFailure)
+  //if (SESSION_STRATEGY === 'jwt') sequentialMiddlewares.push(validateJwtTokenAndLogoutOnFailure)
 
   for (const check of sequentialMiddlewares) {
     const result = await check(request)

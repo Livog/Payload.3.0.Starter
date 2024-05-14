@@ -3,7 +3,7 @@
 import { signIn } from '@/lib/auth'
 import { getUserByEmail } from '@/lib/auth/edge'
 import { getPayload } from '@/lib/payload'
-import { COLLECTION_SLUG_USER } from '@/payload/collections'
+import { COLLECTION_SLUG_USER } from '@/payload/collections/config'
 import { revalidatePath } from 'next/cache'
 import { APIError } from 'payload/errors'
 import { Resend } from 'resend'

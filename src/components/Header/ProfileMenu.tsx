@@ -8,15 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/DropdownMenu'
-import { auth } from '@/lib/auth'
+import { getCurrentUser } from '@/lib/payload'
 import ArrowLeftOnRectangle from '@/public/icons/arrow-left-on-rectangle.svg'
 import Cog8Tooth from '@/public/icons/cog-8-tooth.svg'
 import Link from 'next/link'
 
 const ProfileMenu = async () => {
-  const session = await auth()
-  if (!session?.user) return null
-  const user = session.user
+  const user = await getCurrentUser()
+  if (!user) return null
   const firstName = user?.name?.split(' ')[0]
 
   return (

@@ -3,7 +3,7 @@
 import { signIn } from '@/lib/auth'
 import { getUserByEmail } from '@/lib/auth/adapter'
 import { getPayload } from '@/lib/payload'
-import { COLLECTION_SLUG_USER } from '@/payload/collections'
+import { COLLECTION_SLUG_USER } from '@/payload/collections/config'
 import { revalidatePath } from 'next/cache'
 import { SignUpFormData } from './validation'
 import { DEFAULT_USER_ROLE } from '@/lib/auth/config'
