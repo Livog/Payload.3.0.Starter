@@ -1,6 +1,6 @@
 import { COLLECTION_SLUG_PAGE } from '@/payload/collections/pages'
 import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
-import { getParents } from '~/node_modules/@payloadcms/plugin-nested-docs/dist/utilities/getParents'
+import { getParents } from '@payloadcms/plugin-nested-docs'
 import deepmerge from 'deepmerge'
 import { APIError } from 'payload/errors'
 import type { Field, Payload, Where } from 'payload/types'
