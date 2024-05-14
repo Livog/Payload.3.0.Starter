@@ -1,7 +1,7 @@
 'use server'
 
 import { SESSION_STRATEGY } from '@/lib/auth/config'
-import { COLLECTION_SLUG_SESSIONS } from '@/payload/collections'
+import { COLLECTION_SLUG_SESSIONS } from '@/payload/collections/config'
 import { revalidateTag } from 'next/cache'
 import type { Payload } from 'payload'
 import type { User } from '~/payload-types'

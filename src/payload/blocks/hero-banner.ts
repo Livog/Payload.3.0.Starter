@@ -1,5 +1,5 @@
 import type { Block } from 'payload/types'
-import { COLLECTION_SLUG_MEDIA } from '@/payload/collections/media'
+import { COLLECTION_SLUG_MEDIA } from '@/payload/collections/config'
 
 const HeroBanner: Block = {
   slug: 'HeroBanner',

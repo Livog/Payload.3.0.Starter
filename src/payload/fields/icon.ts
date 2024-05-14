@@ -1,5 +1,5 @@
-import type { Field, FieldHook } from 'payload/types'
 import deepMerge from 'deepmerge'
+import type { Field } from 'payload/types'
 import * as HiIcons from 'react-icons/hi2'
 
 const iconOptions = Object.entries(HiIcons)

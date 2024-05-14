@@ -1,6 +1,6 @@
 import 'server-only'
 import { getPayload } from '@/lib/payload'
-import { COLLECTION_SLUG_PAGE } from '@/payload/collections/pages'
+import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import { notFound } from 'next/navigation'
 import { Page } from '~/payload-types'
 import ensurePath from '@/utils/ensurePath'

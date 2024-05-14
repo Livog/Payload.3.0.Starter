@@ -1,5 +1,5 @@
 import type { Block } from 'payload/types'
-import { COLLECTION_SLUG_FORMS } from '@/payload/collections/forms'
+import { COLLECTION_SLUG_FORMS } from '@/payload/collections/config'
 
 const FormBlock: Block = {
   slug: 'FormBlock',

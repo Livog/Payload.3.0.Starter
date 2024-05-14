@@ -1,6 +1,7 @@
 import 'server-only'
 import { getPayload } from '@/lib/payload'
-import { COLLECTION_SLUG_USER, users } from '@/payload/collections'
+import { users } from '@/payload/collections'
+import { COLLECTION_SLUG_USER } from '@/payload/collections/config'
 import NextAuth from 'next-auth'
 import { getFieldsToSign as getFieldsToSignPayload } from 'payload/auth'
 import { PayloadAdapter } from './adapter'

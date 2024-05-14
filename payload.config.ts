@@ -1,4 +1,5 @@
-import { COLLECTION_SLUG_MEDIA, COLLECTION_SLUG_PAGE, media, pages, sessions, users } from '@/payload/collections'
+import { media, pages, sessions, users } from '@/payload/collections'
+import { COLLECTION_SLUG_MEDIA, COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import { siteSettings } from '@/payload/globals/site-settings'
 import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
@@ -56,12 +57,12 @@ export default buildConfig({
         [COLLECTION_SLUG_MEDIA]: {
           disableLocalStorage: true,
           generateFileURL: (args: any) => {
-            return `https://${process.env.NEXT_PUBLIC_S3_HOSTNAME}/${process.env.NEXT_PUBLIC_S3_BUCKET}/${args.prefix}/${args.filename}`
+            return `https://${process.env.NEXT_PUBLIC_S3_HOSTNAME}/${args.prefix}/${args.filename}`
           },
-          prefix: 'media'
+          prefix: process.env.NEXT_PUBLIC_UPLOAD_PREFIX || 'media'
         }
       },
-      bucket: process.env.NEXT_PUBLIC_S3_BUCKET as string,
+      bucket: process.env.S3_BUCKET as string,
       acl: 'public-read',
       config: {
         endpoint: process.env.S3_ENDPOINT,

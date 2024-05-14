@@ -13,7 +13,8 @@ type CollapsibleProps = React.ComponentPropsWithRef<'div'> & {
 
 const Collapsible: React.FC<CollapsibleProps> = ({ children, className, openByDefault = false, duration = 300, animation, accordionId }) => {
   const id = useId()
-  children = applyPropsToChildrenOfType(children, { id, openByDefault, animation, accordionId }, [CollapsibleContent, CollapsibleTrigger])
+  const context = { id, openByDefault, animation, accordionId }
+  children = applyPropsToChildrenOfType(children, { context }, [CollapsibleContent, CollapsibleTrigger])
   return (
     <div className={cn('relative', className)} style={{ '--animation-duration': `${duration}ms` } as React.CSSProperties}>
       {children}
@@ -23,16 +24,28 @@ const Collapsible: React.FC<CollapsibleProps> = ({ children, className, openByDe
 Collapsible.displayName = 'Collapsible'
 
 type CollapsibleTriggerProps = React.ComponentPropsWithRef<'label'> & {
+  context?: {
+    id?: string
+    openByDefault?: boolean
+    animation?: string
+    accordionId?: string
+  }
   openByDefault?: boolean
-  classNames?: { icon?: string }
   accordionId?: string
+  classNames?: { icon?: string }
 }
 
-const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({ id, classNames = {}, children, className, openByDefault, accordionId, ref, ...props }) => (
+const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({ context = {}, id, classNames = {}, children, className, openByDefault, accordionId, ref, ...props }) => (
   <>
-    <input type={accordionId ? 'radio' : 'checkbox'} name={accordionId || undefined} id={id} className="peer hidden" defaultChecked={openByDefault} />
+    <input
+      type={accordionId ? 'radio' : 'checkbox'}
+      name={accordionId || context.accordionId || undefined}
+      id={id || context.id}
+      className="peer hidden"
+      defaultChecked={openByDefault ?? context.openByDefault}
+    />
     <label
-      htmlFor={id}
+      htmlFor={id || context.id}
       ref={ref}
       className={cn('collapsible group grid cursor-pointer select-none grid-flow-col grid-cols-[minmax(0,_1fr)_auto] items-center', className)}
       {...props}>
@@ -76,15 +89,20 @@ const cvaCollapsibleContent = cva(
 )
 
 type CollapsibleContentProps = React.ComponentPropsWithoutRef<'div'> & {
+  context?: {
+    id?: string
+    openByDefault?: boolean
+    animation?: CollapsibleProps['animation']
+    accordionId?: string
+  }
   innerClassName?: string
-  accordionId?: string
 } & VariantProps<typeof cvaCollapsibleContent>
 
-const CollapsibleContent: React.FC<CollapsibleContentProps> = ({ children, className, innerClassName, animation = 'scale-fade', ...props }) => (
+const CollapsibleContent: React.FC<CollapsibleContentProps> = ({ context = {}, children, className, innerClassName, animation, ...props }) => (
   <div
     className={cn(
       cvaCollapsibleContent({
-        animation
+        animation: animation ?? context?.animation ?? 'scale-fade'
       }),
       className
     )}

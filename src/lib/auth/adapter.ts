@@ -1,11 +1,11 @@
-import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from '@/payload/collections'
+import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from '@/payload/collections/config'
+import generateRandomString from '@/utils/generateRandomString'
+import { isWithinExpirationDate } from '@/utils/isWithinExperationDate'
 import type { AdapterUser } from '@auth/core/adapters'
 import type { Adapter, AdapterUser as BaseAdapterUser } from 'next-auth/adapters'
-import { isWithinExpirationDate } from '@/utils/isWithinExperationDate'
 import type { BasePayload, GeneratedTypes } from 'payload'
-import type { Session, User } from '~/payload-types'
-import { FIELDS_USER_IS_ALLOWED_TO_CHANGE, DEFAULT_USER_ROLE, SESSION_MAX_AGE } from './config'
-import generateRandomString from '@/utils/generateRandomString'
+import type { User } from '~/payload-types'
+import { DEFAULT_USER_ROLE, FIELDS_USER_IS_ALLOWED_TO_CHANGE, SESSION_MAX_AGE } from './config'
 
 declare module '@auth/core/adapters' {
   // @ts-ignore

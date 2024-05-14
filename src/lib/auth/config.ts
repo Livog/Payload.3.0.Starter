@@ -1,13 +1,22 @@
 import { CredentialsSignin, type NextAuthConfig } from 'next-auth'
 import GitHub from 'next-auth/providers/github'
 import Credentials from '@auth/core/providers/credentials'
-import { COLLECTION_SLUG_USER } from '@/payload/collections'
+import { COLLECTION_SLUG_USER, COLLECTION_SLUG_SESSIONS } from '@/payload/collections/config'
 
 export const SESSION_STRATEGY = 'jwt' as 'jwt' | 'database'
 export const SESSION_MAX_AGE = 86400 as const
 export const DEFAULT_USER_ROLE = 'user' as const
 export const FIELDS_USER_IS_ALLOWED_TO_CHANGE = ['name', 'password']
 export const ADMIN_ACCESS_ROLES = ['admin']
+
+const payloadAdapterConfig = {
+  collectionNames: {
+    users: COLLECTION_SLUG_USER,
+    sessions: COLLECTION_SLUG_SESSIONS,
+  }
+} as const
+
+export const PAYLOAD_ADAPTER_CONFIG = payloadAdapterConfig
 
 export default {
   jwt: {

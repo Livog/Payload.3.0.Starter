@@ -1,4 +1,4 @@
-import { COLLECTION_SLUG_MEDIA } from '@/payload/collections/media'
+import { COLLECTION_SLUG_MEDIA } from '@/payload/collections/config'
 import type { Block } from 'payload/types'
 
 const LogoMarquee: Block = {

@@ -1,4 +1,4 @@
-import { COLLECTION_SLUG_PAGE } from '@/payload/collections/pages'
+import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { getParents } from '@payloadcms/plugin-nested-docs'
 import deepmerge from 'deepmerge'
@@ -9,13 +9,12 @@ import generateRandomString from '@/utils/generateRandomString'
 
 type Collection = keyof Config['collections']
 type WillPathConflictParams = {
-  payload: Payload;
-  path: string;
-  originalDoc?: { id?: string };
-  collection: Collection;
-  uniquePathFieldCollections?: Collection[];
-};
-
+  payload: Payload
+  path: string
+  originalDoc?: { id?: string }
+  collection: Collection
+  uniquePathFieldCollections?: Collection[]
+}
 
 export const willPathConflict = async ({
   payload,
@@ -24,12 +23,12 @@ export const willPathConflict = async ({
   collection,
   uniquePathFieldCollections = []
 }: WillPathConflictParams): Promise<boolean> => {
-  if (!payload || !uniquePathFieldCollections.includes(collection)) return false;
+  if (!payload || !uniquePathFieldCollections.includes(collection)) return false
 
   const queries = uniquePathFieldCollections.map((targetCollection) => {
     const whereCondition: Where = {
       path: { equals: path }
-    };
+    }
     if (originalDoc?.id && collection === targetCollection) {
       whereCondition.id = { not_equals: originalDoc.id }
     }
@@ -39,33 +38,27 @@ export const willPathConflict = async ({
       where: whereCondition,
       limit: 1,
       pagination: false
-    });
-  });
+    })
+  })
 
-  const results = await Promise.allSettled(queries);
-  return results.some((result) => result.status === 'fulfilled' && result.value.docs.length > 0);
+  const results = await Promise.allSettled(queries)
+  return results.some((result) => result.status === 'fulfilled' && result.value.docs.length > 0)
 }
 type GetNewPathParams = {
-  req: any;
-  collection: Collection;
-  currentDoc: any;
-  operation?: string;
-};
+  req: any
+  collection: Collection
+  currentDoc: any
+  operation?: string
+}
 
 export async function getNewPath({ req, collection, currentDoc, operation }: GetNewPathParams): Promise<string> {
   const isAutoSave = operation === 'create' && currentDoc?._status === 'draft'
-  if (isAutoSave || !currentDoc?.slug || !collection) return `/${currentDoc?.id || generateRandomString(20)}`
-  const newPath = currentDoc?.breadcrumbs?.at(-1)?.url;
-  if (newPath) return newPath;
-  const docs = await getParents(
-    req,
-    { parentFieldSlug: 'parent'} as any,
-    collection as any,
-    currentDoc,
-    [currentDoc]
-  );
+  if (isAutoSave || currentDoc?.slug == null || !collection) return `/${currentDoc?.id || generateRandomString(20)}`
+  const newPath = currentDoc?.breadcrumbs?.at(-1)?.url
+  if (newPath) return newPath
+  const docs = await getParents(req, { parentFieldSlug: 'parent' } as any, collection as any, currentDoc, [currentDoc])
 
-  return generateBreadcrumbsUrl(docs, currentDoc);
+  return generateBreadcrumbsUrl(docs, currentDoc)
 }
 
 const pathField = (overrides?: Partial<Field>): Field =>

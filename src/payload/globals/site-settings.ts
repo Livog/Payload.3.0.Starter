@@ -1,6 +1,6 @@
 import type { Field, GlobalConfig } from 'payload/types'
 import { isAdmin } from '@/payload/access'
-import { COLLECTION_SLUG_PAGE } from '@/payload/collections'
+import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import { revalidateTag } from 'next/cache'
 import iconField from '@/payload/fields/icon'
 
