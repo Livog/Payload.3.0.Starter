@@ -8,6 +8,7 @@ import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
+import { S3_PLUGIN_CONFIG } from '@/payload/plugins/s3'
 import path from 'path'
 import { buildConfig } from 'payload/config'
 import { en } from 'payload/i18n/en'
@@ -53,6 +54,7 @@ export default buildConfig({
       generateURL: generateBreadcrumbsUrl
     }),
     s3StoragePlugin({
+      ...S3_PLUGIN_CONFIG,
       collections: {
         [COLLECTION_SLUG_MEDIA]: {
           disableLocalStorage: true,
@@ -60,17 +62,6 @@ export default buildConfig({
             return `https://${process.env.NEXT_PUBLIC_S3_HOSTNAME}/${args.prefix}/${args.filename}`
           },
           prefix: process.env.NEXT_PUBLIC_UPLOAD_PREFIX || 'media'
-        }
-      },
-      bucket: process.env.S3_BUCKET as string,
-      acl: 'public-read',
-      config: {
-        endpoint: process.env.S3_ENDPOINT,
-        region: process.env.S3_REGION,
-        forcePathStyle: true,
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string
         }
       }
     }),
