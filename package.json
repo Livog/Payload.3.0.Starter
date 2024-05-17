@@ -17,12 +17,12 @@
     "clear:next": "rm -rf .next"
   },
   "engines": {
-    "node": ">=20.0"
+    "node": "20.x"
   },
   "dependencies": {
     "@auth/core": "^0.31.0",
-    "@aws-sdk/client-s3": "3.575.0",
-    "@aws-sdk/lib-storage": "3.575.0",
+    "@aws-sdk/client-s3": "3.577.0",
+    "@aws-sdk/lib-storage": "3.578.0",
     "@headlessui/react": "^2.0.3",
     "@hookform/resolvers": "^3.4.0",
     "@next/bundle-analyzer": "^14.2.3",
@@ -71,8 +71,9 @@
     "react-hook-form": "^7.51.4",
     "react-icons": "^5.2.1",
     "resend": "^3.2.0",
+    "semver": "^7.6.2",
     "server-only": "^0.0.1",
-    "sharp": "0.33.3",
+    "sharp": "0.33.4",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "^3.4.3",
@@ -83,8 +84,8 @@
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/typography": "^0.5.13",
-    "@types/lodash": "^4.17.1",
-    "@types/node": "^20.12.11",
+    "@types/lodash": "^4.17.4",
+    "@types/node": "^20.12.12",
     "@types/nodemailer": "^6.4.15",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3",
@@ -95,8 +96,14 @@
     "prettier-plugin-classnames": "^0.6.6",
     "prettier-plugin-merge": "^0.6.0",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "tsx": "^4.10.3",
+    "tsx": "^4.10.4",
     "typescript": "^5.4.5"
   },
-  "packageManager": "pnpm@8.15.4+sha256.cea6d0bdf2de3a0549582da3983c70c92ffc577ff4410cbf190817ddc35137c2"
+  "packageManager": "pnpm@8.15.7",
+  "trustedDependencies": [
+    "@swc/core",
+    "es5-ext",
+    "esbuild",
+    "sharp"
+  ]
 }
