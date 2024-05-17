@@ -10,8 +10,8 @@ import type { User } from '~/payload-types'
 import type { Payload } from 'payload'
 import { parseCookies } from 'payload/auth'
 
-const SECURE_AUTHJS_COOKIE_NAME = '__Secure-authjs.session-token'
-const AUTHJS_COOKIE_NAME = 'authjs.session-token'
+export const SECURE_AUTHJS_COOKIE_NAME = '__Secure-authjs.session-token'
+export const AUTHJS_COOKIE_NAME = 'authjs.session-token'
 
 export const getAuthJsCookieName = () => (process.env.NODE_ENV === 'production' ? SECURE_AUTHJS_COOKIE_NAME : AUTHJS_COOKIE_NAME)
 

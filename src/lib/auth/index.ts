@@ -34,7 +34,7 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth(() 
         }
         return token
       },
-      async session({ session, token, trigger }) {
+      async session({ session, token }) {
         session.user = session.user || {}
         if (!token) return session
         const fieldsToSign = getFieldsToSignPayload({

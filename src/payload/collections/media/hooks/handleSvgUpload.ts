@@ -7,17 +7,13 @@ const fetchSVG = async (url: string): Promise<string> => {
 }
 
 export const handleSvgUpload: CollectionAfterChangeHook = async ({ doc, context, req }) => {
-  if (context?.triggerAfterChange === false) {
-    return
-  }
+  if (context?.triggerAfterChange === false || !doc.mimeType.includes('image/svg') || !doc.url) return
   const { payload } = req
   doc.rawContent = null
-  if (doc.mimeType.includes('image/svg') && doc.url) {
-    try {
-      doc.rawContent = await fetchSVG(doc.url)
-    } catch (error) {
-      console.error('Failed to fetch SVG content:', error)
-    }
+  try {
+    doc.rawContent = await fetchSVG(doc.url)
+  } catch (error) {
+    console.error('Failed to fetch SVG content:', error)
   }
   context.triggerAfterChange = false
   await payload.update({

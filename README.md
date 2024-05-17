@@ -104,6 +104,16 @@ npm install -g pnpm
      AUTH_GITHUB_SECRET=<your_github_client_secret>
      ```
 
+   ### Cloudflare (CDN Purging)
+
+   - Go here [here](https://dash.cloudflare.com/). Click on your website, scroll down to Zone ID, copy and paste that.
+   - Click on "Get your API Token" -> Create token -> Create Custom Token -> Permissions: Zone" | "Cache Purge" | Purge. Click save and copy paste the token.
+   - Fill in:
+     ```env
+     CLOUDFLARE_API_TOKEN=
+     CLOUDFLARE_ZONE_ID=
+     ```
+
    ### Resend (Email)
 
    - Sign up for Resend and get your API key [here](https://resend.com).

@@ -6,7 +6,17 @@ import { updateCacheControl } from './hooks/updateCacheControl'
 
 export const media: CollectionConfig = {
   slug: COLLECTION_SLUG_MEDIA,
-  upload: true,
+  upload: {
+    imageSizes: [
+      {
+        name: 'thumbnail',
+        width: 300,
+        height: 300,
+        position: 'centre'
+      }
+    ],
+    adminThumbnail: ({ doc: media }) => (media?.sizes as any)?.thumbnail?.url || media.url
+  },
   admin: {
     useAsTitle: 'title'
   },
