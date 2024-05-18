@@ -1,4 +1,4 @@
-import type { Field, GlobalConfig } from 'payload/types'
+import type { ArrayField, Field, GlobalConfig } from 'payload/types'
 import { isAdmin } from '@/payload/access'
 import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import { revalidateTag } from 'next/cache'
@@ -6,7 +6,7 @@ import iconField from '@/payload/fields/icon'
 
 export const GLOBAL_SETTINGS_SLUG = 'site-settings'
 
-const menuItemsField = (name: 'subMenuItems' | 'menuItems', depth: number = 2): Field => {
+const menuItemsField = (name: 'subMenuItems' | 'menuItems', depth: number = 2, options: Partial<ArrayField> = {}): Field => {
   const label = name === 'menuItems' ? 'Menu Items' : 'Sub Menu Items'
   const fields: Field[] = [
     {
@@ -20,6 +20,7 @@ const menuItemsField = (name: 'subMenuItems' | 'menuItems', depth: number = 2): 
   }
 
   return {
+    ...options,
     type: 'array',
     name,
     label,
@@ -50,11 +51,11 @@ export const siteSettings: GlobalConfig = {
         },
         {
           name: 'header',
-          fields: [{ type: 'text', name: 'logo' }, menuItemsField('menuItems')]
+          fields: [{ type: 'text', name: 'logo' }, menuItemsField('menuItems', 2, { interfaceName: 'HeaderMenu' })]
         },
         {
           name: 'footer',
-          fields: [{ type: 'text', name: 'copyright' }, menuItemsField('menuItems', 0)]
+          fields: [{ type: 'text', name: 'copyright' }, menuItemsField('menuItems', 0, { interfaceName: 'FooterMenu' })]
         }
       ]
     }

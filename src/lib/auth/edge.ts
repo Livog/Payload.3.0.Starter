@@ -12,6 +12,7 @@ import { parseCookies } from 'payload/auth'
 
 export const SECURE_AUTHJS_COOKIE_NAME = '__Secure-authjs.session-token'
 export const AUTHJS_COOKIE_NAME = 'authjs.session-token'
+export const AUTHJS_CALLBACK_URL_COOKIE_NAME = 'authjs.callback-url'
 
 export const getAuthJsCookieName = () => (process.env.NODE_ENV === 'production' ? SECURE_AUTHJS_COOKIE_NAME : AUTHJS_COOKIE_NAME)
 
