@@ -1,11 +1,29 @@
-import { AUTHJS_COOKIE_NAME, SECURE_AUTHJS_COOKIE_NAME, findAuthJsCookie, getAuthJsCookieName, getAuthJsToken } from '@/lib/auth/edge'
+import authConfig, { SESSION_STRATEGY } from '@/lib/auth/config'
+import { AUTHJS_COOKIE_NAME, SECURE_AUTHJS_COOKIE_NAME, findAuthJsCookie, getAuthJsToken } from '@/lib/auth/edge'
 import { isWithinExpirationDate } from '@/utils/isWithinExperationDate'
+import type { JWT } from '@auth/core/jwt'
 import { parseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { NextResponse, type NextRequest } from 'next/server'
-import { SESSION_STRATEGY } from '@/lib/auth/config'
+import { match } from 'path-to-regexp'
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+}
+const protectedRoutes = ['/profile(.*)']
+
+const parseAuthCookieFromHeaders = async (headers: Headers): Promise<{ secure: boolean; value: JWT | null; name: string } | null> => {
+  if (!headers) return null
+
+  const cookieString = headers.get('Cookie') || ''
+  const authJsCookie = findAuthJsCookie(parseCookie(cookieString))
+  const token = await getAuthJsToken(headers)
+
+  if (!authJsCookie) return null
+
+  return {
+    ...authJsCookie,
+    value: token || null
+  }
 }
 
 const mutatResponseToRemoveAuthJsCookie = (response: NextResponse): NextResponse => {
@@ -23,14 +41,27 @@ const handleLogoutResponse = async (request: NextRequest): Promise<NextResponse 
 }
 
 const validateJwtTokenAndLogoutOnFailure = async (request: NextRequest): Promise<NextResponse | true> => {
-  const headers = request.headers
-  const cookieString = headers ? headers.get('Cookie') || '' : ''
-  const authJsCookie = findAuthJsCookie(parseCookie(cookieString))
-  const token = await getAuthJsToken(headers)
+  const authCookie = await parseAuthCookieFromHeaders(request.headers)
 
-  if ((token == null && request.cookies.has(authJsCookie?.name || '')) || (token?.exp != null && !isWithinExpirationDate(new Date(token.exp * 1000)))) {
+  if (
+    (authCookie?.value == null && request.cookies.has(authCookie?.name || '')) ||
+    (authCookie?.value?.exp != null && !isWithinExpirationDate(new Date(authCookie?.value.exp * 1000)))
+  ) {
     const response = NextResponse.redirect(request.url)
-    authJsCookie && request.cookies.has(authJsCookie.name) && response.cookies.delete(authJsCookie.name)
+    mutatResponseToRemoveAuthJsCookie(response)
+    return response
+  }
+  return true
+}
+
+const validateAuthRoutes = async (request: NextRequest): Promise<NextResponse | true> => {
+  const authCookie = await parseAuthCookieFromHeaders(request.headers)
+
+  if (!protectedRoutes.some((route) => match(route, { decode: decodeURIComponent })(request.nextUrl.pathname))) return true
+
+  if (!authCookie || authCookie?.value == null) {
+    const signInUrl = new URL(authConfig?.pages?.signIn || '/sign-in', request.url)
+    const response = NextResponse.redirect(signInUrl)
     return response
   }
   return true
@@ -38,7 +69,10 @@ const validateJwtTokenAndLogoutOnFailure = async (request: NextRequest): Promise
 
 export default async function middleware(request: NextRequest) {
   const sequentialMiddlewares = [handleLogoutResponse]
-  if (SESSION_STRATEGY === 'jwt') sequentialMiddlewares.push(validateJwtTokenAndLogoutOnFailure)
+  if (SESSION_STRATEGY === 'jwt') {
+    sequentialMiddlewares.push(validateJwtTokenAndLogoutOnFailure)
+    sequentialMiddlewares.push(validateAuthRoutes)
+  }
 
   for (const check of sequentialMiddlewares) {
     const result = await check(request)

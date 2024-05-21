@@ -4,6 +4,7 @@ import LogoMarquee from './LogoMarquee'
 import Faq from './Faq'
 import Form from './Form'
 import RichText from './RichText'
+import PricingTable from './PricingTable'
 
 export type AdditionalBlockProps = {
   blockIndex: number
@@ -16,7 +17,8 @@ const blockComponents = {
   LogoMarquee: LogoMarquee,
   Faq: Faq,
   FormBlock: Form,
-  RichText: RichText
+  RichText: RichText,
+  PricingTable: PricingTable
 }
 
 const Blocks = ({ blocks, locale }: any) => {

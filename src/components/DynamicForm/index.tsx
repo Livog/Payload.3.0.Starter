@@ -135,6 +135,7 @@ export default function DynamicForm({ endpoint, form, locale }: { endpoint: stri
       setServerResponse(response)
       if (response && form.confirmationType === 'redirect') {
         if (form?.redirect?.url) {
+          // eslint-disable-next-line react-compiler/react-compiler
           window.location.href = form.redirect.url
         } else if (typeof form.redirect?.reference?.value !== 'string') {
           router.push(form.redirect?.reference?.value?.path || '/')

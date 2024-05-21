@@ -1,5 +1,3 @@
-import 'server-only'
-
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN
 const CLOUDFLARE_ZONE_ID = process.env.CLOUDFLARE_ZONE_ID
 
