@@ -6,6 +6,7 @@ import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { stripePlugin } from '@payloadcms/plugin-stripe'
 import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -18,6 +19,7 @@ import { buildConfig } from 'payload/config'
 import { en } from 'payload/i18n/en'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
+import _get from 'lodash/get'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -55,7 +57,8 @@ export default buildConfig({
   plugins: [
     nestedDocsPlugin({
       collections: [COLLECTION_SLUG_PAGE],
-      generateURL: generateBreadcrumbsUrl
+      generateURL: generateBreadcrumbsUrl,
+      breadcrumbsFieldSlug: 'breadcrumbs'
     }),
     s3StoragePlugin({
       ...S3_PLUGIN_CONFIG,
@@ -100,6 +103,15 @@ export default buildConfig({
           ]
         }
       ]
+    }),
+    seoPlugin({
+      collections: [COLLECTION_SLUG_PAGE],
+      uploadsCollection: COLLECTION_SLUG_MEDIA,
+      generateURL: ({ doc }) => {
+        const path = _get(doc, 'path.value', null)
+        return `${process.env.NEXT_PUBLIC_SITE_URL || ''}${path}`
+      },
+      tabbedUI: true
     })
   ],
   typescript: {

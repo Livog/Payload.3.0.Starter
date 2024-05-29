@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import ensurePath from '@/utils/ensurePath'
+import normalizePath from '@/utils/normalizePath'
 import clsx from 'clsx'
 import Link from 'next/link'
 import React, { CSSProperties, type FC, type ReactElement } from 'react'
@@ -27,7 +27,7 @@ type TextComponentProps = {
 const getLinkForDocument = (doc: any, locale?: string): string => {
   let path = doc?.path
   if (!path || path.startsWith('/home') || path === '/' || path === '') path = '/'
-  return ensurePath(`/${locale}${path}`)
+  return normalizePath(`/${locale}${path}`)
 }
 
 function gcd(a: number, b: number): number {
