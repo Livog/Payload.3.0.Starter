@@ -1,5 +1,5 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/components/ui/Drawer'
-import getSiteSettings from '@/payload/utils/fetchSiteSettings'
+import { getCachedSiteSettings } from '@/payload/utils/siteSettings'
 import cn from '@/utils/cn'
 import { ChevronDown, XIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -41,7 +41,7 @@ const formatMenuItems = (menuItems: HeaderMenu): FormattedMenuItem[] => {
 }
 
 export const Menu = async () => {
-  const settings = await getSiteSettings()
+  const settings = await getCachedSiteSettings()
   const menuItems = formatMenuItems(settings?.header?.menuItems || [])
   return (
     <>

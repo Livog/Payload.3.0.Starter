@@ -1,13 +1,12 @@
-import ThemeChanger from '@/components/ThemeChanger'
 import Container from '@/components/Container'
+import ThemeChanger from '@/components/ThemeChanger'
+import { getCachedSiteSettings } from '@/payload/utils/siteSettings'
 import Logo from '@/public/logo.svg'
-import getSiteSettings from '@/payload/utils/fetchSiteSettings'
 import Link from 'next/link'
-import _isObject from 'lodash/isObject'
-import { Page, SiteSetting, FooterMenu } from '~/payload-types'
+import { FooterMenu, Page } from '~/payload-types'
 
 const Footer = async () => {
-  const settings = await getSiteSettings()
+  const settings = await getCachedSiteSettings()
   function formatFooterMenuItems(menuItems: FooterMenu): Page[] {
     return (menuItems || []).map(({ page }) => (page ? page.value : null)).filter((value): value is Page => typeof value === 'object' && value !== null) || []
   }

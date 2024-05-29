@@ -3,6 +3,7 @@ import { isAdmin } from '@/payload/access'
 import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import { revalidateTag } from 'next/cache'
 import iconField from '@/payload/fields/icon'
+import { generateSiteSettingsCacheKey } from '@/payload/utils/siteSettings'
 
 export const GLOBAL_SETTINGS_SLUG = 'site-settings'
 
@@ -35,7 +36,7 @@ export const siteSettings: GlobalConfig = {
     update: isAdmin
   },
   hooks: {
-    afterChange: [async () => revalidateTag('site-settings')]
+    afterChange: [async () => revalidateTag(generateSiteSettingsCacheKey())]
   },
   fields: [
     {

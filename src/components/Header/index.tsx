@@ -1,12 +1,12 @@
 import Container from '@/components/Container'
-import getSiteSettings from '@/payload/utils/fetchSiteSettings'
+import { getCachedSiteSettings } from '@/payload/utils/siteSettings'
 import Logo from '@/public/logo.svg'
 import Link from 'next/link'
 import { Menu } from './Menu'
 import SignInOrProfile from './SignInOrProfile'
 
 const Header = async () => {
-  const settings = await getSiteSettings()
+  const settings = await getCachedSiteSettings()
   return (
     <header className="absolute top-0 z-50 w-full py-2 text-black dark:text-white">
       <Container className="flex items-center gap-x-3 md:gap-x-5">
