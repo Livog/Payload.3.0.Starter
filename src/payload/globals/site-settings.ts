@@ -3,9 +3,8 @@ import { isAdmin } from '@/payload/access'
 import { COLLECTION_SLUG_PAGE } from '@/payload/collections/config'
 import { revalidateTag } from 'next/cache'
 import iconField from '@/payload/fields/icon'
-import { generateSiteSettingsCacheKey } from '@/payload/utils/siteSettings'
-
-export const GLOBAL_SETTINGS_SLUG = 'site-settings'
+import { generateGlobalCacheKey } from '@/payload/utils/getGlobal'
+import { GLOBAL_SETTINGS_SLUG } from './config'
 
 const menuItemsField = (name: 'subMenuItems' | 'menuItems', depth: number = 2, options: Partial<ArrayField> = {}): Field => {
   const label = name === 'menuItems' ? 'Menu Items' : 'Sub Menu Items'
@@ -36,7 +35,7 @@ export const siteSettings: GlobalConfig = {
     update: isAdmin
   },
   hooks: {
-    afterChange: [async () => revalidateTag(generateSiteSettingsCacheKey())]
+    afterChange: [async () => revalidateTag(generateGlobalCacheKey(GLOBAL_SETTINGS_SLUG))]
   },
   fields: [
     {

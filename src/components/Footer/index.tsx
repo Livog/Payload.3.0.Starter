@@ -1,12 +1,13 @@
 import Container from '@/components/Container'
 import ThemeChanger from '@/components/ThemeChanger'
-import { getCachedSiteSettings } from '@/payload/utils/siteSettings'
+import { GLOBAL_SETTINGS_SLUG } from '@/payload/globals/config'
+import { getCachedGlobal } from '@/payload/utils/getGlobal'
 import Logo from '@/public/logo.svg'
 import Link from 'next/link'
 import { FooterMenu, Page } from '~/payload-types'
 
 const Footer = async () => {
-  const settings = await getCachedSiteSettings()
+  const settings = await getCachedGlobal(GLOBAL_SETTINGS_SLUG)
   function formatFooterMenuItems(menuItems: FooterMenu): Page[] {
     return (menuItems || []).map(({ page }) => (page ? page.value : null)).filter((value): value is Page => typeof value === 'object' && value !== null) || []
   }

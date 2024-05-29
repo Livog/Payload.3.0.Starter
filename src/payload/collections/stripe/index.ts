@@ -1,3 +1,4 @@
+import { isAdmin, isAdminOrCurrentUser, isAdminOrStripeActive } from '@/payload/access'
 import { COLLECTION_SLUG_PRICES, COLLECTION_SLUG_PRODUCTS, COLLECTION_SLUG_SUBSCRIPTIONS, COLLECTION_SLUG_USER } from '@/payload/collections/config'
 import { ensurePriceExist } from '@/payload/stripe/webhooks/price'
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload/types'
@@ -59,6 +60,13 @@ const populatePrices: CollectionBeforeChangeHook = async ({ data, req }) => {
 
 const group = 'Stripe'
 
+const access = {
+  read: isAdminOrStripeActive,
+  create: isAdmin,
+  update: isAdmin,
+  delete: isAdmin
+}
+
 export const PricingType = {
   one_time: 'One Time',
   recurring: 'Recurring'
@@ -90,6 +98,7 @@ export const products: CollectionConfig = {
     useAsTitle: 'name',
     group
   },
+  access,
   hooks: {
     beforeChange: [populatePrices]
   },
@@ -127,6 +136,7 @@ export const prices: CollectionConfig = {
     useAsTitle: 'id',
     group
   },
+  access,
   hooks: {
     beforeChange: [populateProductRelationshipFieldFromStripeProductId]
   },
@@ -158,6 +168,12 @@ export const prices: CollectionConfig = {
 export const subscriptions: CollectionConfig = {
   slug: COLLECTION_SLUG_SUBSCRIPTIONS,
   admin: { useAsTitle: 'id', group },
+  access: {
+    read: isAdminOrCurrentUser,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin
+  },
   fields: [
     {
       type: 'row',

@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload/types'
 import { addContentHashToFile } from './hooks/addContentHashToFile'
 import { handleSvgUpload } from './hooks/handleSvgUpload'
 import { updateCacheControl } from './hooks/updateCacheControl'
+import { isAdmin, isAdminOrPublished, isAnyone } from '@/payload/access'
 
 export const media: CollectionConfig = {
   slug: COLLECTION_SLUG_MEDIA,
@@ -16,6 +17,12 @@ export const media: CollectionConfig = {
       }
     ],
     adminThumbnail: ({ doc: media }) => (media?.sizes as any)?.thumbnail?.url || media.url
+  },
+  access: {
+    read: isAnyone,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin
   },
   admin: {
     useAsTitle: 'title'

@@ -1,5 +1,5 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/components/ui/Drawer'
-import { getCachedSiteSettings } from '@/payload/utils/siteSettings'
+import { getCachedGlobal } from '@/payload/utils/getGlobal'
 import cn from '@/utils/cn'
 import { ChevronDown, XIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -7,6 +7,7 @@ import type { Config, HeaderMenu } from '~/payload-types'
 import { MobileMenuHamburger } from '@/components/MobileMenuHamburger'
 import ReactIcon from '@/components/ReactIcon'
 import MenuItems from './MenuItems'
+import { GLOBAL_SETTINGS_SLUG } from '@/payload/globals/config'
 
 type MenuItem = NonNullable<HeaderMenu>[number]
 type Page = NonNullable<MenuItem['page']>['value'] extends infer P ? (P extends { id: string } ? P : never) : never
@@ -41,7 +42,7 @@ const formatMenuItems = (menuItems: HeaderMenu): FormattedMenuItem[] => {
 }
 
 export const Menu = async () => {
-  const settings = await getCachedSiteSettings()
+  const settings = await getCachedGlobal(GLOBAL_SETTINGS_SLUG)
   const menuItems = formatMenuItems(settings?.header?.menuItems || [])
   return (
     <>
