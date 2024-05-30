@@ -139,12 +139,13 @@ export const createPaymentIntent = async (cart: Cart): Promise<CreatePaymentInte
 }
 
 type CreateCheckoutSessionResponse = { success: true; sessionId: string } | { success: false; error: string }
+type CreateCheckoutSessionRedirects = { success?: string; cancel?: string }
 
-export const createCheckoutSession = async (cart: Cart, redirects: { cancel?: string; success?: string } = {}): Promise<CreateCheckoutSessionResponse> => {
+export const createCheckoutSession = async (cart: Cart, redirects: CreateCheckoutSessionRedirects = {}): Promise<CreateCheckoutSessionResponse> => {
   let user = await getCurrentUser()
   const payload = await getPayload()
 
-  const successRedirectUrl = redirects.success || `${process.env.NEXT_PUBLIC_SITE_URL}/subscription-success?session_id={CHECKOUT_SESSION_ID}`
+  const successRedirectUrl = (redirects.success || `${process.env.NEXT_PUBLIC_SITE_URL}/subscription-success`) + '?session_id={CHECKOUT_SESSION_ID}'
   const cancelRedirectUrl = redirects.cancel || `${process.env.NEXT_PUBLIC_SITE_URL}`
 
   if (!user) {

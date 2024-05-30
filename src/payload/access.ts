@@ -35,6 +35,18 @@ export const isAdminOrStripeActive: Access = ({ req: { user } }) => {
   }
 }
 
+export const isAdminOrUserFieldMatchingCurrentUser: Access = ({ req: { user } }) => {
+  if (user) {
+    if (user?.role === 'admin') return true
+    return {
+      user: {
+        equals: user?.id
+      }
+    }
+  }
+  return false
+}
+
 export const loggedInOrPublished: Access = ({ req: { user } }) => {
   if (user) {
     return true

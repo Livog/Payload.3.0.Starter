@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { ArrowUpRightIcon } from 'lucide-react'
 import Stripe from 'stripe'
 import ManageSubscriptionButton from './ManageSubscriptionButton'
+import { Alert } from '@/components/ui/Alert'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2022-08-01' })
 
@@ -40,39 +41,48 @@ export default async function SubscriptionsPage() {
 
   return (
     <div className="space-y-4 md:space-y-8">
-      <Card className="dark:border-white/5 dark:bg-[#1e1e1e]">
-        <CardHeader>
-          <h2 className="text-2xl font-medium">Current Subscription</h2>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <div>Plan:</div>
-              <div>{productName}</div>
-            </div>
-            <div className="flex justify-between">
-              <div>Status:</div>
-              <div>
-                <Badge color={subscriptionStatusColor} duotone size="sm" className="capitalize">
-                  {String(subscription?.status).replaceAll('_', ' ')}
-                </Badge>
-              </div>
-            </div>
-            {subscription?.currentPeriodEnd && subscription?.status !== 'canceled' && (
+      {!subscription ? (
+        <Alert color="yellow" className="p-4 font-bold">
+          You currently don&apos;t have a subscription.
+        </Alert>
+      ) : null}
+      {!!subscription ? (
+        <Card className="dark:border-white/5 dark:bg-[#1e1e1e]">
+          <CardHeader>
+            <h2 className="text-2xl font-medium">Current Subscription</h2>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
               <div className="flex justify-between">
-                <div>Renewal Date:</div>
-                <div>{new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                <div>Plan:</div>
+                <div>{productName || 'Free'}</div>
               </div>
-            )}
-            {subscription?.endedAt && subscription?.status === 'canceled' && (
-              <div className="flex justify-between">
-                <div>Canceled Date:</div>
-                <div>{new Date(subscription.endedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              {subscription?.status && (
+                <div className="flex justify-between">
+                  <div>Status:</div>
+                  <div>
+                    <Badge color={subscriptionStatusColor} duotone size="sm" className="capitalize">
+                      {String(subscription?.status || 'Free').replaceAll('_', ' ')}
+                    </Badge>
+                  </div>
+                </div>
+              )}
+              {subscription?.currentPeriodEnd && subscription?.status !== 'canceled' && (
+                <div className="flex justify-between">
+                  <div>Renewal Date:</div>
+                  <div>{new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                </div>
+              )}
+              {subscription?.endedAt && subscription?.status === 'canceled' && (
+                <div className="flex justify-between">
+                  <div>Canceled Date:</div>
+                  <div>{new Date(subscription.endedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ) : null}
       <Card className="dark:border-white/5 dark:bg-[#1e1e1e]">
         <CardHeader>
           <h2 className="text-2xl font-medium">Payment Methods</h2>

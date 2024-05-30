@@ -1,4 +1,4 @@
-import { isAdmin, isAdminOrCurrentUser, isAdminOrStripeActive } from '@/payload/access'
+import { isAdmin, isAdminOrCurrentUser, isAdminOrStripeActive, isAdminOrUserFieldMatchingCurrentUser } from '@/payload/access'
 import { COLLECTION_SLUG_PRICES, COLLECTION_SLUG_PRODUCTS, COLLECTION_SLUG_SUBSCRIPTIONS, COLLECTION_SLUG_USER } from '@/payload/collections/config'
 import { ensurePriceExist } from '@/payload/stripe/webhooks/price'
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload/types'
@@ -169,7 +169,7 @@ export const subscriptions: CollectionConfig = {
   slug: COLLECTION_SLUG_SUBSCRIPTIONS,
   admin: { useAsTitle: 'id', group },
   access: {
-    read: isAdminOrCurrentUser,
+    read: isAdminOrUserFieldMatchingCurrentUser,
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin

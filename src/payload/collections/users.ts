@@ -4,7 +4,7 @@ import { revalidateUser } from '@/lib/payload/actions'
 import { isAdmin, isAdminOrCurrentUser } from '@/payload/access'
 import parseCookieString from '@/utils/parseCookieString'
 import type { CollectionConfig } from 'payload/types'
-import { COLLECTION_SLUG_PRODUCTS, COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from './config'
+import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from './config'
 
 const ADMIN_AUTH_GROUP = 'Auth'
 
@@ -90,7 +90,7 @@ export const users: CollectionConfig = {
     },
     read: isAdminOrCurrentUser,
     create: isAdmin,
-    update: isAdmin,
+    update: isAdminOrCurrentUser,
     delete: isAdminOrCurrentUser
   },
   fields: [
