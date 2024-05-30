@@ -6,7 +6,7 @@ export const isAdmin: Access = ({ req }) => {
 
 export const isAdminOrCurrentUser: Access = ({ req }) => {
   if (req?.user?.role === 'admin') return true
-  return { user: { equals: req.user?.id } }
+  return { id: { equals: req.user?.id } }
 }
 
 export const isAnyone: Access = () => true
