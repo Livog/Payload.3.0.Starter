@@ -26,7 +26,7 @@ const weights = {
   900: 'Inter-Black.ttf'
 } as const
 
-export const size = {
+const size = {
   width: 1200,
   height: 630
 }
@@ -43,8 +43,6 @@ const getInterWeight = async (weight: keyof typeof weights) => {
     return interSemiBold
   }
 }
-
-export const contentType = 'image/png'
 
 export const GET = async (request: NextRequest, { params: { path } }: { params: Params }) => {
   if (path.at(-1) !== 'image.jpg') notFound()
@@ -79,6 +77,9 @@ export const GET = async (request: NextRequest, { params: { path } }: { params: 
     ),
     {
       ...size,
+      headers: {
+        'Content-Type': 'image/jpeg'
+      },
       fonts: [
         {
           name: 'Inter',

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageArgs): Promise<Metadata> 
   })
   if (!page) notFound()
 
-  return generateMeta({ doc: page })
+  return generateMeta(params?.path)
 }
 
 const Page = async ({ params }: PageArgs) => {

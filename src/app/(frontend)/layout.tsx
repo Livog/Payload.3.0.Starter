@@ -15,7 +15,8 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-  title: { default: 'Easy Start', template: '%s | Payload SaaS Starter' }
+  title: { default: 'Easy Start', template: '%s | Payload SaaS Starter' },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!)
 }
 
 export const viewport: Viewport = {
