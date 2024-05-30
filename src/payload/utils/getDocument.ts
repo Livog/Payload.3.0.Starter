@@ -49,7 +49,6 @@ export const getDocument = async <K extends keyof Config['collections']>({
 
   const normalizedPath = normalizePath(path, false)
   const where = { path: { equals: normalizedPath } }
-  const asd = await getCurrentUser()
 
   const cacheKey = generateDocumentCacheKey(collection, path)
   const shouldCache = draft ? false : !!cache

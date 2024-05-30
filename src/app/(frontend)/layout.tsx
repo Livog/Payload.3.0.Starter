@@ -3,7 +3,7 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import { Toaster } from '@/components/ui/Sonner'
 import cn from '@/utils/cn'
-import type { Viewport } from 'next'
+import type { Viewport, Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Inter as FontSans } from 'next/font/google'
 
@@ -13,6 +13,10 @@ const fontSans = FontSans({
   variable: '--font-sans',
   display: 'swap'
 })
+
+export const metadata: Metadata = {
+  title: { default: 'Easy Start', template: '%s | Payload SaaS Starter' }
+}
 
 export const viewport: Viewport = {
   themeColor: '#161616'

@@ -9,18 +9,18 @@ import authConfig from '@/lib/auth/config'
 const SignInOrProfile = () => {
   const isSignedIn = hasAuthCookie(headers())
   return (
-    <div className="relative flex gap-x-2">
+    <div className="relative flex items-center gap-x-2">
       {!isSignedIn && (
         <>
           <Link
-            className="rounded-full bg-zinc-800 px-5 py-2.5 font-medium text-white transition-all duration-300 hover:bg-zinc-300 dark:bg-white dark:text-black
-              dark:hover:bg-zinc-200"
+            className="rounded-full bg-zinc-800 px-3 py-1.5 font-medium text-white transition-all duration-300 hover:bg-zinc-300 dark:bg-white dark:text-black
+              dark:hover:bg-zinc-200 sm:px-5 sm:py-2.5"
             href={authConfig?.pages?.newUser || '/sign-in'}>
             Try for free
           </Link>
           <Link
-            className="rounded-full bg-zinc-200 px-5 py-2.5 font-medium text-black transition-all duration-300 hover:bg-zinc-300 dark:bg-zinc-800
-              dark:text-white dark:hover:bg-zinc-700"
+            className="rounded-full bg-zinc-200 px-3 py-1.5 font-medium text-black transition-all duration-300 hover:bg-zinc-300 dark:bg-zinc-800
+              dark:text-white dark:hover:bg-zinc-700 sm:px-5 sm:py-2.5"
             href={authConfig?.pages?.signIn || '/sign-up'}>
             Sign in
           </Link>

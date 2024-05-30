@@ -28,6 +28,6 @@ export const generateMeta = async (args: { doc: Page }): Promise<Metadata> => {
       description,
       images: ogImage ? [{ url: ogImage }] : undefined
     }),
-    title
+    title: { absolute: title }
   }
 }
