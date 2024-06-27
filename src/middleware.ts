@@ -26,17 +26,17 @@ const parseAuthCookieFromHeaders = async (headers: Headers): Promise<{ secure: b
   }
 }
 
-const mutatResponseToRemoveAuthJsCookie = (response: NextResponse): NextResponse => {
-  response.cookies.has(SECURE_AUTHJS_COOKIE_NAME) && response.cookies.delete(SECURE_AUTHJS_COOKIE_NAME)
-  response.cookies.has(AUTHJS_COOKIE_NAME) && response.cookies.delete(AUTHJS_COOKIE_NAME)
-  response.cookies.has('payload-token') && response.cookies.delete('payload-token')
+const mutatResponseToExpireAuthJsCookie = (response: NextResponse): NextResponse => {
+  response.cookies.set(SECURE_AUTHJS_COOKIE_NAME, "", { expires: new Date(0) });
+  response.cookies.set(AUTHJS_COOKIE_NAME, "", { expires: new Date(0) });
+  response.cookies.set("payload-token", "", { expires: new Date(0) });
   return response
 }
 
 const handleLogoutResponse = async (request: NextRequest): Promise<NextResponse | true> => {
   if (request.nextUrl.pathname !== '/admin/logout') return true
   const response = NextResponse.redirect(new URL('/', request.url))
-  mutatResponseToRemoveAuthJsCookie(response)
+  mutatResponseToExpireAuthJsCookie(response)
   return response
 }
 
@@ -48,7 +48,7 @@ const validateJwtTokenAndLogoutOnFailure = async (request: NextRequest): Promise
     (authCookie?.value?.exp != null && !isWithinExpirationDate(new Date(authCookie?.value.exp * 1000)))
   ) {
     const response = NextResponse.redirect(request.url)
-    mutatResponseToRemoveAuthJsCookie(response)
+    mutatResponseToExpireAuthJsCookie(response)
     return response
   }
   return true
